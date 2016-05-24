@@ -659,6 +659,7 @@ public class WCTRasterExport {
         
         
         // define dimensions
+        logger.info("NetCDF Dimensions: Lat="+raster.getHeight()+" Lon="+raster.getWidth());
         ucar.nc2.Dimension latDim = ncfile.addDimension("lat", raster.getHeight());
         ucar.nc2.Dimension lonDim = ncfile.addDimension("lon", raster.getWidth());
         ucar.nc2.Dimension timeDim = null;

@@ -42,6 +42,7 @@ import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,12 +54,18 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
+import org.jfree.util.Log;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import thredds.inventory.bdb.MetadataManager;
+import ucar.nc2.Attribute;
+import ucar.nc2.constants.FeatureType;
+import ucar.nc2.dt.RadialDatasetSweep;
+import ucar.nc2.dt.TypedDatasetFactory;
+import ucar.nc2.util.CancelTask;
 
 
 /**
@@ -272,6 +279,58 @@ public class WCTExportBatch {
      * @param  outfile   Output file
      */
     public static void doBatchExport(WCTExport exporter, File infile, File outfile) {
+        //List<Attribute> attrs=  exporter.getDecodeRadialDatasetSweepHeader().getRadialDatasetSweep().getGlobalAttributes();
+        Double minLat = null;
+        Double minLon = null;
+        Double maxLat = null;
+        Double maxLon = null;
+        String VCP;
+    	CancelTask emptyCancelTask = new CancelTask() {
+            public boolean isCancel() {
+                return false;
+            }
+            public void setError(String arg0) {
+            }
+			@Override
+			public void setProgress(String arg0, int arg1) {
+				// TODO Auto-generated method stub
+				
+			}
+        };
+    	RadialDatasetSweep rds = null;
+		try {
+			rds = (RadialDatasetSweep)
+			            TypedDatasetFactory.open(
+			               FeatureType.RADIAL, 
+			               infile.toString(), 
+			               emptyCancelTask,
+			               new StringBuilder()
+			            );
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			List<Attribute> attrs= rds.getGlobalAttributes();
+			for (int i = 0; i < attrs.size(); i++) {
+				if(attrs.get(i).getName().equalsIgnoreCase("geospatial_lat_min")){
+					minLat=attrs.get(i).getNumericValue().doubleValue();
+				}
+				if(attrs.get(i).getName().equalsIgnoreCase("geospatial_lat_max")){
+					maxLat=attrs.get(i).getNumericValue().doubleValue();
+				}
+				if(attrs.get(i).getName().equalsIgnoreCase("geospatial_lon_min")){
+					minLon=attrs.get(i).getNumericValue().doubleValue();
+				}
+				if(attrs.get(i).getName().equalsIgnoreCase("geospatial_lon_max")){
+					maxLon=attrs.get(i).getNumericValue().doubleValue();
+				}
+						
+			}
+
+		Log.info("Lat/Long: "+minLon +" "+maxLon+" "+minLat+" "+maxLat);
+		WCTFilter nxflter = exporter.getExportL2Filter();
+		nxflter.setExtentFilter(new java.awt.geom.Rectangle2D.Double(minLon, minLat, maxLon - minLon, maxLat - minLat));
+        exporter.setExportRadialFilter(nxflter);   
 
         logger.info(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
         logger.info(" NEXRAD EXPORT:");
@@ -445,7 +504,7 @@ public class WCTExportBatch {
 
                             outputCsvFile = new File(outfile.toString() + File.separator + "metadata.csv");
                             sb.append(metaExporter.getMetadata(files[n].toURI().toURL())+"\n");
-
+                           
                         } catch (WCTExportNoDataException e) {
                             logger.warning("NO DATA PRESENT IN FILE: "+files[n]);
                         } catch (WCTExportException nee) {
