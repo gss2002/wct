@@ -327,7 +327,7 @@ public class WCTExportBatch {
 						
 			}
 
-		Log.info("Lat/Long: "+minLon +" "+maxLon+" "+minLat+" "+maxLat);
+		logger.info("Lat/Long: "+minLon +" "+maxLon+" "+minLat+" "+maxLat);
 		WCTFilter nxflter = exporter.getExportL2Filter();
 		nxflter.setExtentFilter(new java.awt.geom.Rectangle2D.Double(minLon, minLat, maxLon - minLon, maxLat - minLat));
         exporter.setExportRadialFilter(nxflter);   
