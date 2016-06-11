@@ -10,3 +10,4 @@
 .factorypath
 pom.xml.versionsBackup
 target
+/bin/
