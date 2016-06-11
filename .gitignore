@@ -1,1 +1,12 @@
-/target/
+*.iml
+*.ipr
+*.iws
+*.DS_Store
+.idea
+.svn
+.classpath
+.project
+.settings
+.factorypath
+pom.xml.versionsBackup
+target
