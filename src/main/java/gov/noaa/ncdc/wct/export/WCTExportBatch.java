@@ -78,7 +78,7 @@ public class WCTExportBatch {
 
     private static final Logger logger = Logger.getLogger(WCTExportBatch.class.getName());
     
-    private HashMap<String, String> configReplacementsMap = new HashMap<String, String>();
+    public HashMap<String, String> configReplacementsMap = new HashMap<String, String>();
 
 
     
@@ -280,7 +280,8 @@ public class WCTExportBatch {
      */
     public static void doBatchExport(WCTExport exporter, File infile, File outfile) {
         //List<Attribute> attrs=  exporter.getDecodeRadialDatasetSweepHeader().getRadialDatasetSweep().getGlobalAttributes();
-        Double minLat = null;
+    	Thread.dumpStack();
+    	Double minLat = null;
         Double minLon = null;
         Double maxLat = null;
         Double maxLon = null;
@@ -397,6 +398,7 @@ public class WCTExportBatch {
                             logger.severe("GENERAL BATCH PROCESSING ERROR: " + e);
                             logger.fine(Debug.getStackTraceString(e));
                         }
+                    	Thread.dumpStack();
 
                     }
                     else {
@@ -751,6 +753,7 @@ public class WCTExportBatch {
      */
     public static void processConfigFile(WCTExport exporter, File configFile, HashMap<String, String> replacementMap) 
     throws java.net.MalformedURLException, XPathExpressionException {
+    	Thread.dumpStack();
         processConfigFile(exporter, configFile.toURI().toURL(), replacementMap);
     }
 
@@ -1847,7 +1850,7 @@ public class WCTExportBatch {
     
     
     
-    class BatchExportListener implements DataExportListener {
+    public class BatchExportListener implements DataExportListener {
 
         private int lastProgress = 0;
         
