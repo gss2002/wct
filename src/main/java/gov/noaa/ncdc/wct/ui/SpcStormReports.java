@@ -5,11 +5,10 @@ import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.geotools.factory.FactoryConfigurationError;
 import org.geotools.feature.AttributeType;
@@ -24,15 +23,14 @@ import org.geotools.feature.SchemaException;
 import org.geotools.filter.IllegalFilterException;
 import org.geotools.map.DefaultMapLayer;
 import org.geotools.map.MapLayer;
-import org.geotools.styling.ExternalGraphic;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleBuilder;
-import org.geotools.styling.StyleVisitor;
 import org.geotools.styling.Symbolizer;
 import org.geotools.styling.TextSymbolizer;
+import org.joda.time.DateTime;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -63,8 +61,9 @@ public class SpcStormReports {
     };
     
 	public static final AttributeType[] ATTRIBUTES = {
+		AttributeTypeFactory.newAttributeType("type", String.class, true, 10),
 		AttributeTypeFactory.newAttributeType("location", String.class, true, 20),
-		AttributeTypeFactory.newAttributeType("time", String.class, true, 20),
+		AttributeTypeFactory.newAttributeType("date", String.class, true, 20),
 		AttributeTypeFactory.newAttributeType("size", String.class, true, 10),
 		AttributeTypeFactory.newAttributeType("narrative", String.class, true, 200),
 		AttributeTypeFactory.newAttributeType("geom", Geometry.class)
@@ -111,7 +110,7 @@ public class SpcStormReports {
 		Type type = null;
 
 		while ((str = br.readLine()) != null) {
-			System.out.println(str);
+//			System.out.println(str);
 			
 			String[] cols = str.split(",");
 
@@ -138,11 +137,37 @@ public class SpcStormReports {
 			
 			try {
 				
+				// parse dates
+				if (cols[0].trim().length() == 3) {
+					cols[0] = "0"+cols[0].trim();
+				}
+				String hh = cols[0].substring(0, 2);
+				String mm = cols[0].substring(2, 4);
+				
+				
+				
+//				System.out.println(url);
+				String reportDateString = yyyymmdd.substring(0, 4) + "-" + yyyymmdd.substring(4, 6) + 
+						"-" + yyyymmdd.substring(6, 8) + " " + hh + ":" + mm;
+				if (Integer.parseInt(hh) < 12) {				
+					Date endDate = WCTUtils.YYYYMMDD_FORMATTER.parse(yyyymmdd);
+					Date startDate = new DateTime(endDate).plusDays(1).toDate();
+					String s = WCTUtils.YYYYMMDD_FORMATTER.format(startDate);
+					reportDateString = s.substring(0, 4) + "-" + s.substring(4, 6) + "-" + s.substring(6, 8)
+							 + " " + hh + ":" + mm;
+					
+//					System.out.println("before 12Z, using date "+s);
+				}
+//				System.out.println(cols[0]+" "+reportDateString+" "+yymmdd+" "+yyyymmdd);
+				
+
+				
 				if (type == Type.TORNADO) {
 					Feature feature = schema.create(
-							new Object[] { 
+							new Object[] {
+									"Tornado",
 									cols[2], 
-									cols[0]+" GMT", 
+									reportDateString + " GMT", 
 									cols[1], 
 									cols[7],
 									geoFactory.createPoint(new Coordinate(
@@ -156,8 +181,9 @@ public class SpcStormReports {
 				else if (type == Type.HAIL) {
 					Feature feature = schema.create(
 							new Object[] { 
+									"Hail",
 									cols[2], 
-									cols[0]+" GMT",
+									reportDateString + " GMT",
 									WCTUtils.DECFMT_0D00.format(Double.parseDouble(cols[1])/100.0), 
 									cols[7],
 									geoFactory.createPoint(new Coordinate(
@@ -171,8 +197,9 @@ public class SpcStormReports {
 				else if (type == Type.WIND) {
 					Feature feature = schema.create(
 							new Object[] {
+									"Wind",
 									cols[2], 
-									cols[0]+" GMT",
+									reportDateString + " GMT",
 									cols[1], 
 									cols[7],
 									geoFactory.createPoint(new Coordinate(

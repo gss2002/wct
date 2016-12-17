@@ -86,8 +86,8 @@ public class CDRImpactToolUI extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private static CDRImpactToolUI singleton = null;
 
-	private final static String IMPACT_REMOTE_HOME = "http://www1.ncdc.noaa.gov/pub/data/Impact";
-	private final static String IMPACT_REMOTE_DATA_HOME = "http://www1.ncdc.noaa.gov/pub/data/Impact/data";
+	private final static String IMPACT_REMOTE_HOME = "https://www1.ncdc.noaa.gov/pub/data/Impact";
+	private final static String IMPACT_REMOTE_DATA_HOME = "https://www1.ncdc.noaa.gov/pub/data/Impact/data";
 
 	// private final static String IMPACT_REMOTE_HOME = "http://ftp3.ncdc.noaa.gov/pub/download/sansari";
 	// private final static String IMPACT_REMOTE_DATA_HOME = "http://ftp3.ncdc.noaa.gov/pub/download/sansari/data";

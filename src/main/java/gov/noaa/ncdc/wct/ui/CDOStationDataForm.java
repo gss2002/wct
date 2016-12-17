@@ -48,8 +48,8 @@ public class CDOStationDataForm {
 
 
 
-	public static final String SERVICE_URL_STRING = "http://www.ncdc.noaa.gov/cdo-web/quickdata";
-	public static final String AJAX_SERVICE_URL_STRING = "http://www.ncdc.noaa.gov/cdo-web/ajax/ajaxquickdata";
+	public static final String SERVICE_URL_STRING = "https://www.ncdc.noaa.gov/cdo-web/quickdata";
+	public static final String AJAX_SERVICE_URL_STRING = "https://www.ncdc.noaa.gov/cdo-web/ajax/ajaxquickdata";
 
 	public static final File CACHE_PDF = new File(WCTConstants.getInstance().getCacheLocation()+File.separator+
 			"config"+File.separator+"cdoStationForms.pdf");
@@ -157,10 +157,10 @@ public class CDOStationDataForm {
 			
 			for (String station : stationList) {
 				
-				// http://www.ncdc.noaa.gov/cdo-web/quickdatapdf/steve?datasetId=GHCND&productId=GHCN_DAILY_FORM&stationId=GHCND:US1GARB0006&year=2010&month=5&day=1
+				// https://www.ncdc.noaa.gov/cdo-web/quickdatapdf/steve?datasetId=GHCND&productId=GHCN_DAILY_FORM&stationId=GHCND:US1GARB0006&year=2010&month=5&day=1
 				String filePath = null;
 				if (stationList != null) {
-					filePath = "http://www.ncdc.noaa.gov/cdo-web/quickdatapdf/wct"+getQueryString(station, yyyy, mm);
+					filePath = "https://www.ncdc.noaa.gov/cdo-web/quickdatapdf/wct"+getQueryString(station, yyyy, mm);
 				}
 
 				System.out.println(filePath);
@@ -276,10 +276,10 @@ public class CDOStationDataForm {
 		System.out.println("before replace");
 
 		//		html = html.replaceAll("/cdo-web/resources-2.3.0/formcss/form.css",
-		//				"http://www.ncdc.noaa.gov/cdo-web/resources-2.3.0/formcss/form.css");
+		//				"https://www.ncdc.noaa.gov/cdo-web/resources-2.3.0/formcss/form.css");
 
 		html = html.replaceAll("/cdo-web/resources-3.", 
-				"http://www.ncdc.noaa.gov/cdo-web/resources-3.");
+				"https://www.ncdc.noaa.gov/cdo-web/resources-3.");
 
 		html = html.replace("initQuickData(data);", getQuickdataAjaxFunction());
 
@@ -407,7 +407,7 @@ public class CDOStationDataForm {
 
 
 
-	// http://www.ncdc.noaa.gov/cdo-web/quickdatapdf/steve?datasetId=GHCND&productId=GHCN_DAILY_FORM&stationId=GHCND:US1GARB0006&year=2010&month=5&day=1
+	// https://www.ncdc.noaa.gov/cdo-web/quickdatapdf/steve?datasetId=GHCND&productId=GHCN_DAILY_FORM&stationId=GHCND:US1GARB0006&year=2010&month=5&day=1
 	private static String getQueryString(String station, String yyyy, String mm) {
 		//		String dataset = "NORMAL_DLY";
 		String dataset = "GHCND";

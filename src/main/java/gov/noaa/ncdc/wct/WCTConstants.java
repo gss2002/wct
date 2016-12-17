@@ -13,8 +13,8 @@ public class WCTConstants {
 	 * the Toolkit to use it.
 	 */
 
-    public final static String MAP_DATA_JAR_URL = "http://www1.ncdc.noaa.gov/pub/data/wct/dist/wct-MapData-2.0.jar";
-    public final static String CONFIG_JAR_URL = "http://www1.ncdc.noaa.gov/pub/data/wct/dist/wct-Config-1.0.jar"; 
+    public final static String MAP_DATA_JAR_URL = "https://www1.ncdc.noaa.gov/pub/data/wct/dist/wct-MapData-2.0.jar";
+    public final static String CONFIG_JAR_URL = "https://www1.ncdc.noaa.gov/pub/data/wct/dist/wct-Config-1.0.jar"; 
 
     public final static String DEFAULT_CACHE_LOCATION = System.getProperty("user.home") + File.separator + ".wct-cache";
     public final static String DEFAULT_DATA_CACHE_LOCATION = System.getProperty("user.home") + File.separator + ".wct-cache"+ File.separator + "data";    

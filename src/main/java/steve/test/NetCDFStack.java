@@ -357,11 +357,11 @@ public class NetCDFStack {
 
 
             URL[] urls = new URL[] {
-                    new URL("http://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291359"),  
-                    new URL("http://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291404"),  
-                    new URL("http://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291409"),  
-                    new URL("http://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291415"),  
-                    new URL("http://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291420")            
+                    new URL("https://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291359"),  
+                    new URL("https://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291404"),  
+                    new URL("https://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291409"),  
+                    new URL("https://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291415"),  
+                    new URL("https://www1.ncdc.noaa.gov/pub/data/nexradviewer/katrina/data/kmob-level3/KMOB_SDUS74_N0ZMOB_200508291420")            
             };
 
             NetCDFStack ncdf = new NetCDFStack();

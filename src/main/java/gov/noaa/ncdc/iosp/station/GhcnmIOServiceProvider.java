@@ -481,7 +481,7 @@ public class GhcnmIOServiceProvider extends AbstractIOServiceProvider {
     ncfile.addAttribute(null, new Attribute("geospatial_vertical_resolution", "geospatial_vertical_resolution"));
     ncfile.addAttribute(null, new Attribute("geospatial_vertical_positive", "up"));
     ncfile.addAttribute(null, new Attribute("creator_name", "Climate Service and Monitoring Division"));
-    ncfile.addAttribute(null, new Attribute("creator_url", "http://www.ncdc.noaa.gov/ghcnm/"));
+    ncfile.addAttribute(null, new Attribute("creator_url", "https://www.ncdc.noaa.gov/ghcnm/"));
     ncfile.addAttribute(null, new Attribute("creator_email", "ncdc.ghcnm@noaa.gov"));
     ncfile.addAttribute(null, new Attribute("institution", "NOAA/National Climatic Data Center"));
     ncfile.addAttribute(null, new Attribute("date_created", "2010-09-01"));
@@ -492,7 +492,7 @@ public class GhcnmIOServiceProvider extends AbstractIOServiceProvider {
     ncfile.addAttribute(null, new Attribute("contributor_name", "NOAA/National Climatic Data Center"));
     ncfile.addAttribute(null, new Attribute("contributor_role", "contributor_role"));
     ncfile.addAttribute(null, new Attribute("publisher_name", "Climate Service and Monitoring Division"));
-    ncfile.addAttribute(null, new Attribute("publisher_url", "http://www.ncdc.noaa.gov/ghcnm/"));
+    ncfile.addAttribute(null, new Attribute("publisher_url", "https://www.ncdc.noaa.gov/ghcnm/"));
     ncfile.addAttribute(null, new Attribute("publisher_email", "ncdc.ghcnm@noaa.gov"));
     ncfile.addAttribute(null, new Attribute("processing_level", "Quality assurance reviews include preprocessing checks on source data, time series checks\n"+
                    "that identify spurious changes in the mean and variance, spatial comparisons that verify\nthe accuracy of the climatological mean and the seasonal cycle, "+

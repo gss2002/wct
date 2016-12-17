@@ -414,7 +414,7 @@ public class DataSourcePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					Desktop.getDesktop().browse(new URI("http://www.ncdc.noaa.gov/wct/tutorials/?file=order-nexrad"));
+					Desktop.getDesktop().browse(new URI("https://www.ncdc.noaa.gov/wct/tutorials/?file=order-nexrad"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (URISyntaxException e) {
@@ -469,7 +469,7 @@ public class DataSourcePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					Desktop.getDesktop().browse(new URI("http://www.ncdc.noaa.gov/wct/tutorials/?file=order-satellite"));
+					Desktop.getDesktop().browse(new URI("https://www.ncdc.noaa.gov/wct/tutorials/?file=order-satellite"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (URISyntaxException e) {
@@ -503,7 +503,7 @@ public class DataSourcePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					Desktop.getDesktop().browse(new URI("http://www.ncdc.noaa.gov/wct/data.php"));
+					Desktop.getDesktop().browse(new URI("https://www.ncdc.noaa.gov/wct/data.php"));
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(tabPane, e, "Error Message", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();

@@ -2,6 +2,8 @@ package gov.noaa.ncdc.wct.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,6 +12,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.Rectangle2D;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,11 +27,13 @@ import java.util.TimeZone;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
@@ -32,6 +41,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.geotools.feature.Feature;
@@ -42,6 +53,8 @@ import org.geotools.gui.swing.tables.FeatureTableModel;
 import org.geotools.map.DefaultMapLayer;
 import org.geotools.map.MapContext;
 import org.geotools.map.MapLayer;
+import org.geotools.renderer.j2d.LegendPosition;
+import org.geotools.renderer.j2d.RenderedLogo;
 import org.geotools.styling.Graphic;
 import org.geotools.styling.Mark;
 import org.geotools.styling.PointSymbolizer;
@@ -52,9 +65,16 @@ import org.geotools.styling.TextSymbolizer;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.JXTable;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 import gov.noaa.ncdc.common.RiverLayout;
 import gov.noaa.ncdc.nexradiv.BaseMapStyleInfo;
 import gov.noaa.ncdc.wct.WCTProperties;
+import gov.noaa.ncdc.wct.WCTUtils;
+import gov.noaa.ncdc.wct.decoders.nexrad.RadarHashtables;
+import gov.noaa.ncdc.wct.decoders.nexrad.RadarHashtables.SearchFilter;
+import gov.noaa.ncdc.wct.io.ScanResults;
+import gov.noaa.ncdc.wct.io.WCTDataSourceDB;
 
 public class SpcStormReportsUI extends JDialog {
 	
@@ -73,33 +93,13 @@ public class SpcStormReportsUI extends JDialog {
 	
 	private WCTViewer viewer;
 	private JCheckBox clearOnClose;
-	private JButton displayButton, animateButton, clearButton;
+	private JButton displayButton, clearButton;
+	private JLabel statusLabel = new JLabel();
 	
 	
-//    
-//    public final static float Z_INDEX = 2+((float)1)/100 + 0.201f;
-//    public final static String LAYER_NAME = "U.S. Drought Monitor";
-//    public final static Color EMPTY_BACKGROUND_COLOR = new Color(255, 255, 255);
-//    
-//    private JList dateList;
-//    private NdmcDroughtMonitor ndm = new NdmcDroughtMonitor();
-//    private HashMap<String, String> dateMap = new HashMap<String, String>();
-//    private AnimationFrame animationFrame = new AnimationFrame();
-//    
-//    private final JComboBox transparency = new JComboBox(new Object[] {
-//            "  0 %", " 10 %", " 20 %", " 30 %", " 40 %", " 50 %", 
-//            " 60 %", " 70 %", " 80 %", " 90 %", "100 %"
-//    }); 
-//    
-//    private final static String OLD_TO_NEW = "Old to New";
-//    private final static String NEW_TO_OLD = "New to Old";    
-//    private JComboBox animationOrder = new JComboBox(new Object[] {
-//            OLD_TO_NEW, NEW_TO_OLD
-//    });
-//    private JLabel animationOrderLabel = new JLabel("     Order:");
     
     public SpcStormReportsUI(WCTViewer parent) {      
-        super(parent, "U.S. Storm Reports Browser", false);
+        super(parent, "U.S. Preliminary Storm Reports Browser", false);
         this.viewer = parent;
         
         init();
@@ -136,30 +136,37 @@ public class SpcStormReportsUI extends JDialog {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new RiverLayout());
 
+        final JDialog finalThis = this;
 
-		picker.setTimeZone(TimeZone.getTimeZone("GMT"));
+//		picker.setTimeZone(TimeZone.getTimeZone("GMT"));  -- this screwed things up, perhaps bug in picker?
 		picker.getMonthView().setUpperBound(new Date());
 		picker.getMonthView().setFlaggedDayForeground(Color.BLUE.darker());
 		String lastDateProp = WCTProperties.getWCTProperty("spcReports_Date");
 		if (lastDateProp != null) {
 			try {
 				picker.setDate(SDF_YYYYMMDD.parse(lastDateProp));
+				System.out.println("1 set picker date to: "+picker.getDate() + " from "+lastDateProp);
 			} catch (ParseException e1) {
 				picker.setDate(new Date());
+				System.out.println("2 set picker date to: "+picker.getDate() + " from nothing");
 				e1.printStackTrace();
 			}
 		}
 		else {
 			picker.setDate(new Date());
+			System.out.println("3 set picker date to: "+picker.getDate() + " from "+new Date());
 		}
-		picker.addPropertyChangeListener(e -> {
-			if ("date".equals(e.getPropertyName())) {
-				// refresh upper bound, in case the next GMT day becomes available after picker has been created
-				picker.getMonthView().setUpperBound(new Date());
-				try {
-					displayReports();
-				} catch (Exception e1) {
-					e1.printStackTrace();
+		picker.addPropertyChangeListener(new PropertyChangeListener() {			
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if ("date".equals(e.getPropertyName())) {
+					// refresh upper bound, in case the next GMT day becomes available after picker has been created
+					picker.getMonthView().setUpperBound(new Date());
+					try {
+						displayReports();
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -179,27 +186,51 @@ public class SpcStormReportsUI extends JDialog {
         
 
 		JButton prevDayButton = new JButton("-1 Day");
-		prevDayButton.addActionListener(e -> {
-			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-			cal.setTime(picker.getDate());
-			cal.add(Calendar.DAY_OF_MONTH, -1);
-			picker.setDate(cal.getTime());
-			try {
-				displayReports();
-			} catch (Exception e1) {
-				e1.printStackTrace();
+		prevDayButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+				cal.setTime(picker.getDate());
+				cal.add(Calendar.DAY_OF_MONTH, -1);
+				picker.setDate(cal.getTime());
+				System.out.println("4 set picker date to: "+picker.getDate() + " from "+cal.toString());
+				try {
+                    foxtrot.Worker.post(new foxtrot.Task() {
+                        public Object run() throws Exception {
+                        	setIsLoading(true);
+                        	System.out.println(picker.getDate());
+                            displayReports();
+                            setIsLoading(false);
+                            return "DONE";
+                        }
+                    });
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		JButton nextDayButton = new JButton("+1 Day");
-		nextDayButton.addActionListener(e -> {
-			Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-			cal.setTime(picker.getDate());
-			cal.add(Calendar.DAY_OF_MONTH, 1);
-			picker.setDate(cal.getTime());			
-			try {
-				displayReports();
-			} catch (Exception e1) {
-				e1.printStackTrace();
+		nextDayButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+				cal.setTime(picker.getDate());
+				cal.add(Calendar.DAY_OF_MONTH, 1);
+				picker.setDate(cal.getTime());		
+				System.out.println("5 set picker date to: "+picker.getDate() + " from "+cal.toString());	
+				try {                    
+					foxtrot.Worker.post(new foxtrot.Task() {
+						public Object run() throws Exception {
+                        	setIsLoading(true);
+                        	System.out.println(picker.getDate());
+                            displayReports();
+                            setIsLoading(false);
+							return "DONE";
+						}
+					});
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -208,6 +239,7 @@ public class SpcStormReportsUI extends JDialog {
         datePanel.setLayout(new RiverLayout());
         datePanel.add(prevDayButton);
         datePanel.add(picker, "hfill");
+        datePanel.add(statusLabel);
         datePanel.add(nextDayButton);
 //        datePanel.add(listScrollPane, "hfill vfill");
 //        datePanel.add(new JLabel("Hold the 'Select' or 'Control' keys"), "br center");
@@ -218,22 +250,25 @@ public class SpcStormReportsUI extends JDialog {
 
         reportsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         reportsTable.setSortable(true);
-        reportsTable.getSelectionModel().addListSelectionListener(e->{
-//        	System.out.println(reportsTable.getSelectedRow() + "  : "+ e.getFirstIndex() + " : "+narrativeList.size());
-//        	System.out.println(narrativeList);
-        	
+        reportsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        	@Override
+        	public void valueChanged(ListSelectionEvent e) {
+        		//        	System.out.println(reportsTable.getSelectedRow() + "  : "+ e.getFirstIndex() + " : "+narrativeList.size());
+        		//        	System.out.println(narrativeList);
+
         		if (reportsTable.getSelectedRow() >= 0 && reportsTable.getSelectedRow() < narrativeList.size()) {
         			narrativeTextPane.setText(narrativeList.get(reportsTable.getSelectedRow()));
         			selectedFeatures.clear();
-//        			FeatureCollection fc = FeatureCollections.newCollection();
-//        			fc.add
+        			//        			FeatureCollection fc = FeatureCollections.newCollection();
+        			//        			fc.add
         			selectedFeatures.add(mappedFeatures.get(reportsTable.getSelectedRow()));
         		}
         		else {
         			narrativeTextPane.setText("");
         		}
-			}        	
-        );
+        	}        	
+        }
+        		);
         
 
         displayButton = new JButton("Display");
@@ -244,7 +279,9 @@ public class SpcStormReportsUI extends JDialog {
                 try {
                     foxtrot.Worker.post(new foxtrot.Task() {
                         public Object run() throws Exception {
+                        	setIsLoading(true);
                             displayReports();
+                            setIsLoading(false);
                             return "DONE";
                         }
                     });
@@ -287,25 +324,70 @@ public class SpcStormReportsUI extends JDialog {
         
         
         
+        JButton zoomToButton = new JButton("Zoom To Selected Event");
+        zoomToButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                zoomToSelected();
+            }
+        });
+        
+        
+        JButton exportButton = new JButton("Export Data");
+        exportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportData();
+            }
+        });
+        
+        JButton loadL2Radar = new JButton("Load Radar Data (Level-2)");
+        loadL2Radar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+					loadL2Radar();
+				} catch (Exception e1) {
+					JOptionPane.showMessageDialog(viewer, e1.getMessage());
+					e1.printStackTrace();
+				}
+            }
+        });
+        
+        JButton orderL3Radar = new JButton("Order Radar Products (Level-3)");
+        orderL3Radar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+					orderL3Radar();
+				} catch (MalformedURLException e1) {
+					JOptionPane.showMessageDialog(viewer, e1.getMessage());
+					e1.printStackTrace();
+				}
+            }
+        });
+        
+        
+        
         JButton aboutButton = new JButton("About");
         aboutButton.addActionListener(new ActionListener() {
-//            @Override
+            @Override
             public void actionPerformed(ActionEvent e) {
                 showInfo();
             }
         });
         clearButton = new JButton("Clear");
         clearButton.addActionListener(new ActionListener() {
-//            @Override
+            @Override
             public void actionPerformed(ActionEvent e) {
                 removeReportsMapLayers();
             }
         });
         clearOnClose = new JCheckBox("Clear on Close", true);
         
-        JButton dataButton = new JButton("Raw Data (KML/CSV/Excel)");
+        JButton dataButton = new JButton("NOAA/NWS Storm Reports Website");
         dataButton.addActionListener(new ActionListener() {
-//            @Override
+            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     WCTUiUtils.browse(viewer, "http://www.spc.noaa.gov/climo/reports/", "Error browsing to: http://www.spc.noaa.gov/climo/reports/");
@@ -335,7 +417,7 @@ public class SpcStormReportsUI extends JDialog {
 
         JButton backgroundMapButton = new JButton("Background Maps");
         backgroundMapButton.addActionListener(new ActionListener() {
-//            @Override
+            @Override
             public void actionPerformed(ActionEvent e) {
                 viewer.getMapSelector().setVisible(true);
                 viewer.getMapSelector().setSelectedTab(2);
@@ -343,15 +425,25 @@ public class SpcStormReportsUI extends JDialog {
         });
         
         
-        JCheckBox showLabelsCheckBox = new JCheckBox("Show Labels?", true);
-        showLabelsCheckBox.addActionListener(e -> {
-        	stormReports.setLabelEnabled(showLabelsCheckBox.isSelected());
-        	try {
-				displayReports();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				WCTUiUtils.showErrorMessage(this, "Error loading NOAA/SPC Reports", e1);
-			}
+        final JCheckBox showLabelsCheckBox = new JCheckBox("Show Labels?", true);
+        showLabelsCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	stormReports.setLabelEnabled(showLabelsCheckBox.isSelected());
+            	try {
+					foxtrot.Worker.post(new foxtrot.Task() {
+						public Object run() throws Exception {
+                        	setIsLoading(true);
+                            displayReports();
+                            setIsLoading(false);
+							return "DONE";
+						}
+					});
+            	} catch (Exception e1) {
+            		e1.printStackTrace();
+            		WCTUiUtils.showErrorMessage(finalThis, "Error loading NOAA/SPC Reports", e1);
+            	}
+            }
         });
         
 
@@ -361,9 +453,12 @@ public class SpcStormReportsUI extends JDialog {
 //        buttonPanel.add(new JLabel("Transparency: "));
 //        buttonPanel.add(transparency);
         
-        buttonPanel.add(displayButton, "br center");
-        buttonPanel.add(showLabelsCheckBox);
+        buttonPanel.add(zoomToButton, "br center");
+        buttonPanel.add(exportButton);
         buttonPanel.add(clearButton);
+        buttonPanel.add(loadL2Radar, "br center");
+        buttonPanel.add(orderL3Radar);
+        buttonPanel.add(showLabelsCheckBox, "br center");
         buttonPanel.add(clearOnClose);
 //        buttonPanel.add(animateButton, "br center");
 //        buttonPanel.add(animationOrderLabel);
@@ -401,28 +496,28 @@ public class SpcStormReportsUI extends JDialog {
         
         
         this.addWindowListener(new WindowListener() {
-//            @Override
+            @Override
             public void windowActivated(WindowEvent arg0) {
             }
-//            @Override
+            @Override
             public void windowClosed(WindowEvent arg0) {
             }
-//            @Override
+            @Override
             public void windowClosing(WindowEvent e) {
                 if (clearOnClose.isSelected()) {
                     removeReportsMapLayers();
                 }
             }
-//            @Override
+            @Override
             public void windowDeactivated(WindowEvent arg0) {
             }
-//            @Override
+            @Override
             public void windowDeiconified(WindowEvent arg0) {
             }
-//            @Override
+            @Override
             public void windowIconified(WindowEvent arg0) {
             }
-//            @Override
+            @Override
             public void windowOpened(WindowEvent arg0) {
             }
         });
@@ -454,8 +549,105 @@ public class SpcStormReportsUI extends JDialog {
     }
     
     
+    private void exportData() {
+    	WCTQuickExportUI exportUI = new WCTQuickExportUI(viewer, "spc_reports_export_dir", "spc_reports_export_file");
+    	exportUI.showExportFeaturesDialog(mappedFeatures);
+    }
     
+    private void zoomToSelected() {
+    	if (selectedFeatures.size() == 0) {
+    		JOptionPane.showMessageDialog(viewer, "A Storm Report must be selected to proceed.");
+    		return;
+    	}
+    	double lat = selectedFeatures.features().next().getDefaultGeometry().getCoordinate().y;
+    	double lon = selectedFeatures.features().next().getDefaultGeometry().getCoordinate().x;
+    	// zoom to 2 deg box centered around selected point
+    	viewer.setCurrentExtent(new Rectangle2D.Double(lon-1, lat-1, 2.0, 2.0));
+    }
     
+    private void loadL2Radar() throws Exception {
+    	if (selectedFeatures.size() == 0) {
+    		JOptionPane.showMessageDialog(viewer, "A Storm Report must be selected to proceed.");
+    		return;
+    	}
+    	Geometry g = selectedFeatures.features().next().getDefaultGeometry();
+		RadarHashtables radhash = RadarHashtables.getSharedInstance();
+		String closestId = radhash.getClosestICAO(g.getCoordinate().y, g.getCoordinate().x, 999999999, SearchFilter.NEXRAD_ONLY_NO_TEST_SITES);
+		System.out.println("report coord: "+g.getCoordinate()+" closest found: "+closestId);
+		
+    	// 012345678901234567890
+    	// 2016-08-22 13:34 GMT
+    	String dateString = selectedFeatures.features().next().getAttribute("date").toString();
+    	
+
+        viewer.getDataSelector().getDataSourcePanel().setDataType(WCTDataSourceDB.NOAA_BDP_AWS);
+		
+        NexradBDPAccessPanel bdpAccessPanel = viewer.getDataSelector().getDataSourcePanel().getNexradBDPAccessPanel();
+        bdpAccessPanel.setDate(dateString.substring(0, 4) + dateString.substring(5, 7) + dateString.substring(8, 10));
+        bdpAccessPanel.setSite(closestId);
+
+        viewer.getDataSelector().submitListFiles();
+        
+        
+        ScanResults[] scanResults = viewer.getDataSelector().getScanResults();
+        int closestIndex = 0;
+    	long reportMillis = WCTUtils.DATE_HOUR_MIN_FORMATTER.parse(dateString.substring(0, 16)).getTime();
+    	long scannedMillis = WCTUtils.SCAN_RESULTS_FORMATTER.parse(scanResults[0].getTimestamp()).getTime();
+    	long diff = Math.abs(reportMillis-scannedMillis);
+    	
+        for (int n=1; n<scanResults.length; n++) {
+//        	System.out.print(dateString + " vs. ");
+//        	System.out.println(scanResults[n].getTimestamp());
+//        	012345678901234567890
+//        	2016-07-28 23:22 GMT  reports timestamp
+//        	20160728 21:49:24  scan results timestamp
+        	reportMillis = WCTUtils.DATE_HOUR_MIN_FORMATTER.parse(dateString.substring(0, 16)).getTime();
+        	scannedMillis = WCTUtils.SCAN_RESULTS_FORMATTER.parse(scanResults[n].getTimestamp()).getTime();
+        	if (Math.abs(reportMillis-scannedMillis) < diff) {
+        		diff = Math.abs(reportMillis-scannedMillis);
+        		closestIndex = n;
+        	}
+//        	if (scanResults[n].getFileName().equals(folders[7])) {
+//        		viewer.getDataSelector().getResultsList().setSelectedIndex(n);
+//              viewer.getDataSelector().getResultsList().ensureIndexIsVisible(n);
+//        	}
+        }         
+        
+        // don't match if we can't get within 10 min
+        if (diff > 10L*60*1000) {
+        	JOptionPane.showMessageDialog(viewer, "Unable to find a matching Level-2 NEXRAD file within 10 minutes of storm report");
+        }
+        else {
+        	viewer.getDataSelector().getResultsList().setSelectedIndex(closestIndex);
+        	viewer.getDataSelector().getResultsList().ensureIndexIsVisible(closestIndex);
+        	viewer.getDataSelector().setIsAutoExtentSelected(false);
+        	viewer.getDataSelector().loadData();
+        }
+		
+    }
+    
+    private void orderL3Radar() throws MalformedURLException {
+    	if (selectedFeatures.size() == 0) {
+    		JOptionPane.showMessageDialog(viewer, "A Storm Report must be selected to proceed.");
+    		return;
+    	}
+    	Geometry g = selectedFeatures.features().next().getDefaultGeometry();
+		RadarHashtables radhash = RadarHashtables.getSharedInstance();
+		String closestId = radhash.getClosestICAO(g.getCoordinate().y, g.getCoordinate().x, 999999999, SearchFilter.NEXRAD_ONLY_NO_TEST_SITES); 
+
+    	// 012345678901234567890
+    	// 2016-08-22 13:34 GMT
+    	String dateString = selectedFeatures.features().next().getAttribute("date").toString();
+    	String yyyy = dateString.substring(0, 4);
+    	String mm = dateString.substring(5, 7);
+    	String dd = dateString.substring(8, 10);
+    	
+//    	https://www.ncdc.noaa.gov/nexradinv/displaygraphs.jsp?mm=07&dd=25&yyyy=2016&product=ABL3ALL&filter=&id=KGSP
+    	String webpage = "https://www.ncdc.noaa.gov/nexradinv/displaygraphs.jsp?"
+    			+ "mm="+mm+"&dd="+dd+"&yyyy="+yyyy+"&product=ABL3ALL&filter=&id="+closestId;
+
+        WCTUiUtils.browse(viewer, webpage, "Error browsing to: "+webpage);
+    }
     
     
     private Style getStyle() {
@@ -498,15 +690,23 @@ public class SpcStormReportsUI extends JDialog {
     
     
     
-    
+    private void setIsLoading(boolean isLoading) {
+    	if (isLoading) {
+    		statusLabel.setIcon(new ImageIcon(CDOServicesUI.class.getResource("/icons/ajax-loader.gif")));  
+    	}
+    	else {
+    		statusLabel.setIcon(null);
+    	}
+    }
     
     
     
     public void displayReports() throws Exception {
         
 //    	String yyyymmdd = "20110405";
+    	System.out.println(picker.getDate());
     	String yyyymmdd = SDF_YYYYMMDD.format(picker.getDate());
-    	
+    	System.out.println(yyyymmdd);
     	
     	stormReports.loadReports(yyyymmdd);
     	
@@ -515,7 +715,7 @@ public class SpcStormReportsUI extends JDialog {
         selectedFeatures.clear();
         
         DefaultTableModel displayTableModel = new DefaultTableModel(
-        		new String[] { "Type", "Time", "Size", "Location" }, 0) {
+        		new String[] { "Type", "Date/Time", "Size", "Location" }, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                //all cells false
@@ -526,10 +726,9 @@ public class SpcStormReportsUI extends JDialog {
         FeatureIterator iter = stormReports.getFcTorn().features();
         while (iter.hasNext()) {
         	Feature f = iter.next();
-        	String time = f.getAttribute("time").toString().substring(0, 2) + ":"+f.getAttribute("time").toString().substring(2, 4)+" GMT";
         	displayTableModel.addRow(new String[] {
         			"Tornado", 
-        			time,
+        			f.getAttribute("date").toString(),
         			f.getAttribute("size").toString(), 
         			f.getAttribute("location").toString() 
         		});
@@ -539,10 +738,9 @@ public class SpcStormReportsUI extends JDialog {
         iter = stormReports.getFcHail().features();
         while (iter.hasNext()) {
         	Feature f = iter.next();
-        	String time = f.getAttribute("time").toString().substring(0, 2) + ":"+f.getAttribute("time").toString().substring(2, 4)+" GMT";
         	displayTableModel.addRow(new String[] {
         			"Hail", 
-        			time,
+        			f.getAttribute("date").toString(),
         			f.getAttribute("size").toString()+" IN.", 
         			f.getAttribute("location").toString() 
         		});
@@ -552,11 +750,10 @@ public class SpcStormReportsUI extends JDialog {
         iter = stormReports.getFcWind().features();
         while (iter.hasNext()) {
         	Feature f = iter.next();
-        	String time = f.getAttribute("time").toString().substring(0, 2) + ":"+f.getAttribute("time").toString().substring(2, 4)+" GMT";
         	String size = f.getAttribute("size").toString();
         	displayTableModel.addRow(new String[] {
         			"Wind", 
-        			time,
+        			f.getAttribute("date").toString(),
         			(size.equals("UNK")) ? size : size+" MPH", 
         			f.getAttribute("location").toString() 
         		});
@@ -564,14 +761,14 @@ public class SpcStormReportsUI extends JDialog {
         	mappedFeatures.add(f);
         }
 
-        System.out.println(displayTableModel);
-        System.out.println(narrativeList);
+//        System.out.println(displayTableModel);
+//        System.out.println(narrativeList);
         
 //        reportsTable.setAutoResizeMode(JXTable.AUTO_RESIZE_OFF);
         reportsTable.setAutoResizeMode(JXTable.AUTO_RESIZE_LAST_COLUMN);
         reportsTable.setModel(displayTableModel);
         reportsTable.getColumn(0).setPreferredWidth(50);
-        reportsTable.getColumn(1).setPreferredWidth(40);
+        reportsTable.getColumn(1).setPreferredWidth(95);
         reportsTable.getColumn(2).setPreferredWidth(40);
 //        reportsTable.getColumn(3).setWidth(4000);
 
@@ -606,6 +803,24 @@ public class SpcStormReportsUI extends JDialog {
         featureTableModel.setFeatureCollection(stormReports.getFcWind());
         
         revalidate();
+        
+        URL imageURL = WCTViewer.class.getResource("/images/spc-reports-legend.png");
+        Image img = null;
+        if (imageURL != null) {
+            img = new ImageIcon(imageURL).getImage();
+        }
+        else {
+            System.err.println("NIDIS Logo image not found");
+        }
+
+        RenderedLogo logo = new RenderedLogo(img);
+        logo.setZOrder(500.3f);
+        logo.setPosition(LegendPosition.SOUTH_EAST);
+        logo.setInsets(new Insets(0, 0, 18, img.getWidth(null)));
+        
+        viewer.displayCustomLegend("Storm Reports Legend", logo);
+        
+        
         
 //        for (MapLayer l : map.getLayers()) {
 //        	System.out.println("MAP LAYER: "+l.getTitle() + " : feature_count="+l.getFeatureSource().getFeatures().getCount());
@@ -646,6 +861,9 @@ public class SpcStormReportsUI extends JDialog {
     	if (selectedReportsMapLayer != null) {
     		viewer.getMapContext().removeLayer(selectedReportsMapLayer);
     	}
+    	
+
+        viewer.removeCustomLegend("Storm Reports Legend");
     }
    
     

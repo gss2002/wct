@@ -165,10 +165,19 @@ public class LegendCategoryFactory {
     				}
     				else if (header.getProductCode() == NexradHeader.L3PC_DIGITAL_HYDROMETEOR_CLASSIFICATION ||
     						header.getProductCode() == NexradHeader.L3PC_DIGITAL_HYBRID_HYDROMETEOR_CLASSIFICATION) {
-    					labels = WCTUtils.flipArray(new String[]{
+    					
+    					if (header.getVersion() == 1) {
+    						labels = WCTUtils.flipArray(new String[]{
+        							"(1) Biological", "(2) AP/Gr. Clutter", "(3) Ice Crystals", "(4) Dry Snow", "(5) Wet Snow",
+        							"(6) Lt./Mod. Rain", "(7) Heavy Rain", "(8) Big Drops Rain", "(9) Graupel", "(10) Hail w/ Rain", 
+        							"(11) Large Hail", "(12) Giant Hail", "TBD", "(14) Unknown", "(15) RF" });
+    					}
+    					else {
+    						labels = WCTUtils.flipArray(new String[]{
     							"(1) Biological", "(2) AP/Gr. Clutter", "(3) Ice Crystals", "(4) Dry Snow", "(5) Wet Snow",
     							"(6) Lt./Mod. Rain", "(7) Heavy Rain", "(8) Big Drops Rain", "(9) Graupel", "(10) Hail w/ Rain", 
     							"TBD", "TBD", "TBD", "(14) Unknown", "(15) RF" });
+    					}
     				}
     			}
     			else {

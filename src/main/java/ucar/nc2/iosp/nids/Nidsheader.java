@@ -3173,7 +3173,7 @@ class Nidsheader{
         ncfile.addAttribute(null, new Attribute("title", "Nexrad Level 3 Data"));
         ncfile.addAttribute(null, new Attribute("keywords", "WSR-88D; NIDS"));
         ncfile.addAttribute(null, new Attribute("creator_name", "NOAA/NWS"));
-        ncfile.addAttribute(null, new Attribute("creator_url", "http://www.ncdc.noaa.gov/oa/radar/radarproducts.html"));
+        ncfile.addAttribute(null, new Attribute("creator_url", "https://www.ncdc.noaa.gov/oa/radar/radarproducts.html"));
         ncfile.addAttribute(null, new Attribute("naming_authority", "NOAA/NCDC"));
 
 

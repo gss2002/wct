@@ -422,7 +422,7 @@ ActionListener, WindowListener, ComponentListener {
 	/**
 	 *  Description of the Field
 	 */
-	public final static int ASOS_AWOS = 15;
+	public final static int ASOS = 15;
 	/**
 	 *  Description of the Field
 	 */
@@ -1551,10 +1551,10 @@ ActionListener, WindowListener, ComponentListener {
 		}
 		else if (source == jmiOrderData) {
 			try {
-				BareBonesBrowserLaunch.openURL("http://www.ncdc.noaa.gov/wct/data.php");
+				BareBonesBrowserLaunch.openURL("https://www.ncdc.noaa.gov/wct/data.php");
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "No Default Browser found.\n"+
-						"Please direct you browser to \" http://www.ncdc.noaa.gov/wct/data.php \"", 
+						"Please direct you browser to \" https://www.ncdc.noaa.gov/wct/data.php \"", 
 						"BROWSER CONTROL ERROR", javax.swing.JOptionPane.ERROR_MESSAGE);            
 			}
 		}
@@ -1753,6 +1753,22 @@ ActionListener, WindowListener, ComponentListener {
 				if (spcStormReports == null) {
 					spcStormReports = new SpcStormReportsUI(this);
 				}
+				else {
+
+					try {
+						foxtrot.Worker.post(new foxtrot.Task() {
+							public Object run() throws Exception {
+						    	setIsLoading(true);
+						        spcStormReports.displayReports();
+						        setIsLoading(false);
+								return "DONE";
+							}
+						});
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				spcStormReports.setLocation(this.getX()+25, this.getY()+25);
 				spcStormReports.setVisible(true);
 
@@ -1784,7 +1800,7 @@ ActionListener, WindowListener, ComponentListener {
 			String betaVersion = WCTUiUtils.checkCurrentBETAVersion();
 			String upgradeString = "";
 			if (! WCTUiUtils.getVersion().equals(stableVersion) && ! WCTUiUtils.getVersion().equals(betaVersion)) {
-				upgradeString = "--- Update Available! --- \nGo to: http://www.ncdc.noaa.gov/wct/ \n";
+				upgradeString = "--- Update Available! --- \nGo to: https://www.ncdc.noaa.gov/wct/ \n";
 			}
 			if (stableVersion.equals(betaVersion)) {
 				betaVersion = "N/A";
@@ -1806,10 +1822,10 @@ ActionListener, WindowListener, ComponentListener {
 		}
 		else if (source == jmiTutorial) {
 			try {
-				BareBonesBrowserLaunch.openURL("http://www.ncdc.noaa.gov/wct/tutorials/");
+				BareBonesBrowserLaunch.openURL("https://www.ncdc.noaa.gov/wct/tutorials/");
 			} catch (Exception e) {
 				javax.swing.JOptionPane.showMessageDialog(this, "No Default Browser found.\n"+
-						"Please direct you browser to \" http://www.ncdc.noaa.gov/wct/tutorials/ \"", 
+						"Please direct you browser to \" https://www.ncdc.noaa.gov/wct/tutorials/ \"", 
 						"BROWSER CONTROL ERROR", javax.swing.JOptionPane.ERROR_MESSAGE);            
 			}
 		}
@@ -1883,6 +1899,22 @@ ActionListener, WindowListener, ComponentListener {
 		try {
 			if (spcStormReports == null) {
 				spcStormReports = new SpcStormReportsUI(this);
+			}
+			else {
+
+				try {
+					foxtrot.Worker.post(new foxtrot.Task() {
+						public Object run() throws Exception {
+					    	setIsLoading(true);
+					        spcStormReports.displayReports();
+					        setIsLoading(false);
+							return "DONE";
+						}
+					});
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			spcStormReports.setLocation(this.getX()+25, this.getY()+25);
 			spcStormReports.setVisible(true);
@@ -2741,7 +2773,7 @@ ActionListener, WindowListener, ComponentListener {
 			((MapLayer) baseMapLayers.elementAt(AIRPORTS)).setVisible(false);
 		} catch (Exception e) {}
 		try {
-			((MapLayer) baseMapLayers.elementAt(ASOS_AWOS)).setVisible(false);
+			((MapLayer) baseMapLayers.elementAt(ASOS)).setVisible(false);
 		} catch (Exception e) {}
 		try {
 			((MapLayer) baseMapLayers.elementAt(CRN)).setVisible(false);
@@ -4023,7 +4055,14 @@ ActionListener, WindowListener, ComponentListener {
 
 					radLegendProducer.setSupplementalCategoryLabels(new String[] {" 1 ", "2"});
 					
-					radLegendProducer.setDrawColorMap(false);
+					if (header.getProductCode() != NexradHeader.L3PC_MELTING_LAYER) {
+						radLegendProducer.setDrawColorMap(false);
+					}
+					else {
+						radLegendProducer.setDrawColorMap(true);		                
+						radLegendProducer.setCategoryColors(new Color[] { alphaLineColor, alphaLineColor.darker().darker() });
+		                radLegendProducer.setCategoryLabels(new String[] { "USING BEAM CENTER", "USING BEAM EDGE" });
+					}
 					keyPanel.setLegendImage(radLegendProducer);                    
 					keyPanel.repaint();
 
@@ -5194,7 +5233,7 @@ ActionListener, WindowListener, ComponentListener {
 				//                }
 			}
 		} catch (IOException e) {
-			if (e.getMessage().startsWith("Operation canceled")) {
+			if (e.getMessage() != null && e.getMessage().startsWith("Operation canceled")) {
 				setIsLoading(false);
 			}
 		} catch (Exception e) {
@@ -5720,6 +5759,25 @@ ActionListener, WindowListener, ComponentListener {
 			wmsLayerMap.remove(name);
 		}
 	}
+	
+	public void displayCustomLegend(String name, RenderedLogo legend) {
+
+		if (legend != null) {
+			legend.setVisible(true);
+			if (wmsLegendMap.containsKey(name)) {
+				wctMapPane.getRenderer().removeLayer(wmsLegendMap.get(name));
+			}
+			wctMapPane.getRenderer().addLayer(legend);
+			wmsLegendMap.put(name, legend);
+		}
+	}
+	
+	public void removeCustomLegend(String name) {
+		if (wmsLegendMap.containsKey(name)) {
+			wctMapPane.getRenderer().removeLayer(wmsLegendMap.get(name));
+			wmsLegendMap.remove(name);
+		}
+	}
 
 	public void setWMSTransparency(String name, int alpha, Color emptyBackgroundColor) throws Exception {
 
@@ -5760,6 +5818,19 @@ ActionListener, WindowListener, ComponentListener {
 		gridSatelliteGC = gc;
 		gridSatelliteRGC.setGridCoverage(gc);
 		gridSatelliteRGC.setVisible(isVisible);
+		
+		System.out.println("VIEWER: gridSatelliteGC.getEnvelope() "+gridSatelliteGC.getEnvelope());
+		System.out.println("VIEWER: gridSatelliteRGC.getPreferredArea() "+gridSatelliteRGC.getPreferredArea());
+		System.out.println("VIEWER: gc.getEnvelope() "+gc.getEnvelope());
+		
+//		if (gc.getEnvelope().getLength(1) > 90) {
+//			try {
+//				throw new Exception();
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		fireRenderCompleteEvent();
 	}
 
@@ -5855,6 +5926,7 @@ ActionListener, WindowListener, ComponentListener {
 				}
 				else {      
 					setGridSatelliteGridCoverage(gridDatasetRaster.getGridCoverage());
+					System.out.println("setGridSatelliteGridCoverage(gridDatasetRaster.getGridCoverage());  "+gridDatasetRaster.getGridCoverage().getEnvelope());
 				}
 				statusBar.setProgressText("");
 
@@ -7699,7 +7771,7 @@ ActionListener, WindowListener, ComponentListener {
 					if (n == CITY250 || n == CITY100 || 
 							n == CITY35 || n == CITY10 || 
 							n == CITY_SMALL || n == AIRPORTS || 
-							n == ASOS_AWOS || n == WSR) {
+							n == ASOS || n == WSR) {
 
 						setLayerFillAndLineColor(n, getLayerFillColor(n), getLayerLineColor(n));
 					}
@@ -9605,19 +9677,19 @@ System.out.println(isLabelVisible(index)+"=label  "+isLayerVisible(index));
 			WCTViewer map = new WCTViewer();
 
 
-			if (args.length == 1 && args[0].endsWith(".wctproj")) {
+			if (args.length >= 1 && args[0].endsWith(".wctproj")) {
 				try {
 					map.openFile(new File(args[0]));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			else if (args.length == 1 && args[0].trim().equalsIgnoreCase("Drought-Service")) {
+			else if (args.length >= 1 && args[0].trim().equalsIgnoreCase("Drought-Service")) {
 				NdmcDroughtMonitorUI droughtMonitor = map.getNdmcDroughtMonitorUI();
 				droughtMonitor.setVisible(true);
 				droughtMonitor.setLocation(map.getX()+25, map.getY()+25);
 			}
-			else if (args.length == 1 && args[0].trim().equalsIgnoreCase("CDR-Impact-Tool")) {
+			else if (args.length >= 1 && args[0].trim().equalsIgnoreCase("CDR-Impact-Tool")) {
 				try {
 					CDRImpactToolUI impactTool = CDRImpactToolUI.getInstance(map);
 					impactTool.setVisible(true);

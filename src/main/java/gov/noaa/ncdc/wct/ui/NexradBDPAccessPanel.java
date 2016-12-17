@@ -2,10 +2,13 @@ package gov.noaa.ncdc.wct.ui;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +29,7 @@ import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.JXHyperlink;
 
 import gov.noaa.ncdc.common.RiverLayout;
+import gov.noaa.ncdc.wct.WCTException;
 import gov.noaa.ncdc.wct.WCTProperties;
 import gov.noaa.ncdc.wct.decoders.nexrad.RadarHashtables;
 
@@ -90,11 +94,14 @@ public class NexradBDPAccessPanel extends JPanel {
 		else {
 			picker.setDate(new Date());
 		}
-		picker.addPropertyChangeListener(e -> {
-			if ("date".equals(e.getPropertyName())) {
-				// refresh upper bound, in case the next GMT day becomes available after picker has been created
-				picker.getMonthView().setUpperBound(new Date());
-				selectDate(picker.getDate());
+		picker.addPropertyChangeListener(new PropertyChangeListener() {			
+			@Override
+			public void propertyChange(PropertyChangeEvent e) {
+				if ("date".equals(e.getPropertyName())) {
+					// refresh upper bound, in case the next GMT day becomes available after picker has been created
+					picker.getMonthView().setUpperBound(new Date());
+					selectDate(picker.getDate());
+				}
 			}
 		});
 		picker.getMonthView().addMouseMotionListener(new MouseMotionListener() {
@@ -114,30 +121,48 @@ public class NexradBDPAccessPanel extends JPanel {
 
 		JXHyperlink bdpLink = new JXHyperlink();
 		bdpLink.setText("[ ? ]");
-		bdpLink.addActionListener(e -> WCTUiUtils.browse(viewer, "https://data-alliance.noaa.gov/", "Error browsing to: https://data-alliance.noaa.gov/"));        
+		bdpLink.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				WCTUiUtils.browse(viewer, "https://data-alliance.noaa.gov/", "Error browsing to: https://data-alliance.noaa.gov/");
+			}
+		});
 
 		JXHyperlink mapLink = new JXHyperlink();
 		mapLink.setText("[map]");
-		mapLink.addActionListener(e -> {
-			try {
-				viewer.getMapSelector().setLabelVisibility(WCTViewer.WSR, false);
-				viewer.getMapSelector().setLayerVisibility(WCTViewer.WSR, false);
-				viewer.getMapSelector().setLabelVisibility(WCTViewer.WSR, true);
-				viewer.getMapSelector().setLayerVisibility(WCTViewer.WSR, true);
-			} catch (Exception e1) {
-				e1.printStackTrace();
+		mapLink.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					viewer.getMapSelector().setLabelVisibility(WCTViewer.WSR, false);
+					viewer.getMapSelector().setLayerVisibility(WCTViewer.WSR, false);
+					viewer.getMapSelector().setLabelVisibility(WCTViewer.WSR, true);
+					viewer.getMapSelector().setLayerVisibility(WCTViewer.WSR, true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 
 		JXHyperlink awsLink = new JXHyperlink();
 		awsLink.setText("Amazon Documentation");
-		awsLink.addActionListener(e -> WCTUiUtils.browse(viewer, "https://aws.amazon.com/noaa-big-data/nexrad/", 
-				"Error browsing to: https://aws.amazon.com/noaa-big-data/nexrad/"));   		
-
+		awsLink.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) { 
+				WCTUiUtils.browse(viewer, "https://aws.amazon.com/noaa-big-data/nexrad/", 
+						"Error browsing to: https://aws.amazon.com/noaa-big-data/nexrad/");   		
+			}
+		});
+		
 		JXHyperlink nceiNewsLink = new JXHyperlink();
 		nceiNewsLink.setText("NCEI News Article");
-		nceiNewsLink.addActionListener(e -> WCTUiUtils.browse(viewer, "https://www.ncdc.noaa.gov/news/partnering-amazon-web-services-big-data",
-				"Error browsing to: https://www.ncdc.noaa.gov/news/partnering-amazon-web-services-big-data"));   
+		nceiNewsLink.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				WCTUiUtils.browse(viewer, "https://www.ncdc.noaa.gov/news/partnering-amazon-web-services-big-data",
+				"Error browsing to: https://www.ncdc.noaa.gov/news/partnering-amazon-web-services-big-data");   
+			}
+		});
 		
 		JButton listButton = new JButton("  List Files  ");
 		listButton.addActionListener(listButtonListener);
@@ -220,11 +245,16 @@ public class NexradBDPAccessPanel extends JPanel {
 	public void setDate(String yyyymmdd) throws ParseException {
 		picker.setDate(SDF_YYYYMMDD.parse(yyyymmdd));
 	}
-	public void setSite(String siteid) {
+	public void setSite(String siteid) throws WCTException {
+		boolean foundMatch = false;
 		for (int n=0; n<siteList.getItemCount(); n++) {
 			if (siteList.getItemAt(n).startsWith(siteid)) {
 				siteList.setSelectedIndex(n);
+				foundMatch = true;
 			}
+		}
+		if (! foundMatch) {
+			throw new WCTException("The site "+siteid+" is not currently included in the NOAA Big Data project.");
 		}
 	}
 	

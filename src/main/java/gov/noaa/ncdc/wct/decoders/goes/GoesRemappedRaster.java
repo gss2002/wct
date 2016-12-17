@@ -201,7 +201,7 @@ public class GoesRemappedRaster implements WCTRaster {
 //				logger.fine(ncfile.toString());
 //				String variableName = "image";
 				this.variableName = "calibratedData";
-				if (ncfile.findVariable("bandNum").readScalarInt() == 1) {
+				if (ncfile.findVariable("bandNum") == null || ncfile.findVariable("bandNum").readScalarInt() == 1) {
 				    this.variableName = "image";
 				}
 				        
@@ -220,14 +220,14 @@ public class GoesRemappedRaster implements WCTRaster {
 				SimpleDateFormat sdfTime = new SimpleDateFormat("HHmmss");
 				sdfTime.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-				System.out.println("********* GOES DATE/TIME INFO ***********");
-				System.out.println("actualImgDate: "+ncfile.findVariable("actualImgDate").readScalarInt());				
-				System.out.println("actualImgTime: "+ncfile.findVariable("actualImgTime").readScalarInt());				
-				System.out.println("creationDate: "+ncfile.findVariable("creationDate").readScalarInt());				
-				System.out.println("creationTime: "+ncfile.findVariable("creationTime").readScalarInt());				
-				System.out.println("imageDate: "+ncfile.findVariable("imageDate").readScalarInt());				
-				System.out.println("imageTime: "+ncfile.findVariable("imageTime").readScalarInt());				
-				System.out.println("********* GOES DATE/TIME INFO ***********");
+				logger.info("********* GOES DATE/TIME INFO ***********");
+				logger.info("actualImgDate: "+ncfile.findVariable("actualImgDate").readScalarInt());				
+				logger.info("actualImgTime: "+ncfile.findVariable("actualImgTime").readScalarInt());				
+				logger.info("creationDate: "+ncfile.findVariable("creationDate").readScalarInt());				
+				logger.info("creationTime: "+ncfile.findVariable("creationTime").readScalarInt());				
+				logger.info("imageDate: "+ncfile.findVariable("imageDate").readScalarInt());				
+				logger.info("imageTime: "+ncfile.findVariable("imageTime").readScalarInt());				
+				logger.info("********* GOES DATE/TIME INFO ***********");
 				
 				long dateMillis = sdfDate.parse(fmtDate.format(ncfile.findVariable("actualImgDate").readScalarInt()).substring(1)).getTime();
 				long timeMillis = sdfTime.parse(fmtTime.format(ncfile.findVariable("actualImgTime").readScalarInt())).getTime();
@@ -346,8 +346,8 @@ public class GoesRemappedRaster implements WCTRaster {
 			double cellSizeX = envelope.getLength(0)/(double)width;
 			double cellSizeY = envelope.getLength(1)/(double)height;
 
-			System.out.println("height="+height+" width="+width+" cellSizeX="+cellSizeX+" , cellSizeY="+cellSizeY);
-//			logger.fine("height="+height+" width="+width+" cellSizeX="+cellSizeX+" , cellSizeY="+cellSizeY);
+//			System.out.println("height="+height+" width="+width+" cellSizeX="+cellSizeX+" , cellSizeY="+cellSizeY);
+			logger.fine("height="+height+" width="+width+" cellSizeX="+cellSizeX+" , cellSizeY="+cellSizeY);
 
 
 

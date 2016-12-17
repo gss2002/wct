@@ -706,8 +706,8 @@ public class ViewerKmzUtilities {
                 "by pressing the 'play' button on the time slider. <br><br>" +
                 "This animation was created by NOAA's Weather and Climate Toolkit.  For more " +
                 "information, please visit one of the following links. <br><br>" +
-                "<a href=\"http://www.ncdc.noaa.gov\">NOAA's National Climatic Data Center (NCDC) </a> <br> " +
-                "<a href=\"http://www.ncdc.noaa.gov/wct/\">NOAA Weather and Climate Toolkit</a> <br> " +
+                "<a href=\"https://www.ncdc.noaa.gov\">NOAA's National Climatic Data Center (NCDC) </a> <br> " +
+                "<a href=\"https://www.ncdc.noaa.gov/wct/\">NOAA Weather and Climate Toolkit</a> <br> " +
         "]]></description> \n");
         kmlString.append("   <open>1</open> \n");
         kmlString.append("   <Style> \n");

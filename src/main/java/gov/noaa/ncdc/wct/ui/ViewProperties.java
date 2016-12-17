@@ -1037,7 +1037,7 @@ public class ViewProperties extends JDialog implements ActionListener, ChangeLis
 	   sb.append("      <fileTimestampLocation> yyyy:4-8; MM:8-10; dd:10-12; HH:13-15; mm:15-17; ss:17-19 </fileTimestampL"+System.getProperty("line.separator"));
 	   sb.append("      <sourceID> 0-4 </sourceID>                                                                        "+System.getProperty("line.separator"));
 	   sb.append("      <productCode> 20-23 </productCode>                                                                "+System.getProperty("line.separator"));
-	   sb.append("      <info href=\"http://www.ncdc.noaa.gov/oa/radar/radarproducts.html\">                              "+System.getProperty("line.separator"));
+	   sb.append("      <info href=\"https://www.ncdc.noaa.gov/oa/radar/radarproducts.html\">                              "+System.getProperty("line.separator"));
 	   sb.append("         <![CDATA[                                                                                      "+System.getProperty("line.separator"));
 	   sb.append("         Level-II NEXRAD Data contains the three base moments, or variables, for NEXRAD data.  These    "+System.getProperty("line.separator"));
 	   sb.append("         moments are Reflectivity, Radial Velocity and Spectrum Width.  Level-II data contains all      "+System.getProperty("line.separator"));

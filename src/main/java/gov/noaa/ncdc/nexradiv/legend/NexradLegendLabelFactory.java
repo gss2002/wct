@@ -25,6 +25,7 @@ import gov.noaa.ncdc.wct.decoders.nexrad.DecodeXMRGHeader;
 import gov.noaa.ncdc.wct.decoders.nexrad.NexradHeader;
 import gov.noaa.ncdc.wct.decoders.nexrad.RadarHashtables;
 
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

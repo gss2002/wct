@@ -314,7 +314,11 @@ public class RasterMathDialog extends JXDialog {
 		final WCTExport exporter = new WCTExport();
 //		exporter.setForceResample(true);
 		exporter.setOutputFormat(WCTExport.ExportFormat.WCT_RASTER_OBJECT_ONLY);
-		WCTFilter exportFilter = new WCTFilter();
+//		WCTFilter exportFilter = new WCTFilter();
+		WCTFilter exportFilter = viewer.getFilter();
+		if (exportFilter == null) {
+			exportFilter = new WCTFilter();
+		}
 		Rectangle2D.Double curExtent = viewer.getCurrentExtent();
 		Rectangle2D extent = curExtent.createIntersection(new Rectangle2D.Double(-180, -90, 360, 180));
 		exportFilter.setExtentFilter((Rectangle2D.Double)extent);
@@ -476,15 +480,24 @@ public class RasterMathDialog extends JXDialog {
 			viewer.setRadarGridCoverageVisibility(true);
 		}
 		else {
+			
+			System.out.println("VIEWER - FINISHED MATH, SETTING BOUNDS: processRaster.getBounds():"+processRaster.getBounds());
+			System.out.println("VIEWER - FINISHED MATH, SETTING BOUNDS: gc.getEnvelope():"+gc.getEnvelope());
+			
+			
 			viewer.getGridDatasetRaster().setWritableRaster(processRaster.getWritableRaster());
 			viewer.getGridDatasetRaster().setBounds(processRaster.getBounds());
 			viewer.getGridDatasetRaster().setDisplayMinValue(viewer.getGridDatasetRaster().getMinValue());
 			viewer.getGridDatasetRaster().setDisplayMaxValue(viewer.getGridDatasetRaster().getMaxValue());
+			System.out.println("VIEWER - FINISHED MATH, SETTING BOUNDS: gc.getEnvelope():"+gc.getEnvelope());
 			viewer.setGridSatelliteGridCoverage(gc);
 			viewer.setGridSatelliteVisibility(true);
 			
-			
+			System.out.println("VIEWER - CHECKING RASTER BOUNDS BEFORE (processRaster.getBounds()): "+processRaster.getBounds());
+			System.out.println("VIEWER - CHECKING RASTER BOUNDS BEFORE (viewer.getGridDatasetsRaster()): "+viewer.getGridDatasetRaster().getBounds());
 			viewer.setGridSatelliteColorTable(viewer.getGridDatasetRaster().getColorTableAlias());
+			System.out.println("VIEWER - CHECKING RASTER BOUNDS AFTER (processRaster.getBounds()): "+processRaster.getBounds());
+			System.out.println("VIEWER - CHECKING RASTER BOUNDS AFTER (viewer.getGridDatasetsRaster()): "+viewer.getGridDatasetRaster().getBounds());
 		}
 		
 		
@@ -652,6 +665,9 @@ public class RasterMathDialog extends JXDialog {
 			reportException(e, exporter);
 		}
 
+		
+		
+		System.out.println("AFTER MATH OP, RASTER EXTENT: "+processRaster.getBounds());
 		return processRaster;
 	}
 	
@@ -785,21 +801,17 @@ public class RasterMathDialog extends JXDialog {
 		int radTransparency = 255 - ((int)((viewer.getMapSelector().getRadarTransparency()/100.0)*255));
 		int gridSatTransparency = 255 - ((int)((viewer.getMapSelector().getGridSatelliteTransparency()/100.0)*255));
 		
-//		if (scanResult.getDataType() == SupportedDataType.GOES_SATELLITE_AREA_FORMAT) {
 		if (dataType == SupportedDataType.GOES_SATELLITE_AREA_FORMAT) {
 			GoesRemappedRaster goes = exporter.getLastProcessedGoesRemappedRaster();
 			goes.setWritableRaster(processRaster.getWritableRaster());
 			gc = goes.getGridCoverage(gridSatTransparency);
 		}
-//		else if (scanResult.getDataType() == SupportedDataType.NEXRAD_LEVEL3 ||
-//				scanResult.getDataType() == SupportedDataType.NEXRAD_LEVEL3_NWS) {
 		else if (dataType == SupportedDataType.NEXRAD_LEVEL3 ||
 				dataType == SupportedDataType.NEXRAD_LEVEL3_NWS) {
 
 			gc = gcSupport.getGridCoverage(processRaster, exporter.getLevel3Header(), radTransparency);
 
 		}
-//		else if (scanResult.getDataType() == SupportedDataType.RADIAL) {
 		else if (dataType == SupportedDataType.RADIAL) {
 			RadialDatasetSweepRemappedRaster radialRaster = exporter.getLastProcessedRadialRemappedRaster();
 			radialRaster.setWritableRaster(processRaster.getWritableRaster());
@@ -808,8 +820,10 @@ public class RasterMathDialog extends JXDialog {
 		}
 		else {
 			GridDatasetRemappedRaster grid = exporter.getLastProcessedGridDatasetRemappedRaster();
+			System.out.println("EXPORTER getLastProcessedGridDatasetRemappedRaster bounds: "+exporter.getLastProcessedGridDatasetRemappedRaster().getBounds());
 			grid.setWritableRaster(processRaster.getWritableRaster());
 			gc = grid.getGridCoverage(gridSatTransparency);
+			System.out.println("FINAL GC bounds: "+gc.getEnvelope());
 		}
 		return gc;
 	}
@@ -863,9 +877,8 @@ public class RasterMathDialog extends JXDialog {
             	viewer.snapshotCurrentLayer();
             }
             else if (e.getActionCommand().equalsIgnoreCase("EXPORT")) {
-            	WCTQuickExportUI quickExport = new WCTQuickExportUI(viewer, processRaster, 
-            			"math_export_dir", "math_export_file");
-            	quickExport.showExportDialog();
+            	WCTQuickExportUI quickExport = new WCTQuickExportUI(viewer, "math_export_dir", "math_export_file");
+            	quickExport.showExportRasterDialog(processRaster);
             }
             else if (e.getActionCommand().equalsIgnoreCase("CANCEL")) {
             	setShouldCancel(true);

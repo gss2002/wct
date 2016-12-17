@@ -242,7 +242,7 @@ public class LayerSelector extends JDialog implements ActionListener {
         makeMapPanel(WCTViewer.CITY100, "Cities (100k - 250k)", viewer.isLayerVisible(WCTViewer.CITY100));
         makeMapPanel(WCTViewer.CITY250, "Cities (Pop > 250k)", viewer.isLayerVisible(WCTViewer.CITY250));
         makeMapPanel(WCTViewer.AIRPORTS, "Airports", viewer.isLayerVisible(WCTViewer.AIRPORTS));
-        makeMapPanel(WCTViewer.ASOS_AWOS, "ASOS/AWOS", viewer.isLayerVisible(WCTViewer.ASOS_AWOS));
+        makeMapPanel(WCTViewer.ASOS, "ASOS/AWOS", viewer.isLayerVisible(WCTViewer.ASOS));
         makeMapPanel(WCTViewer.CLIMATE_DIV, "Climate Divisions", viewer.isLayerVisible(WCTViewer.CLIMATE_DIV));
         makeMapPanel(WCTViewer.CRN, "CRN", viewer.isLayerVisible(WCTViewer.CRN));
 

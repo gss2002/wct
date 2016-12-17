@@ -42,7 +42,7 @@ import thredds.catalog.ServiceType;
 public class DirectoryScanner {
 
 
-	public static final String NCDC_HAS_HTTP_SERVER = "http://www1.ncdc.noaa.gov";
+	public static final String NCDC_HAS_HTTP_SERVER = "https://www1.ncdc.noaa.gov";
 	public static final String NCDC_HAS_HTTP_DIRECTORY = "pub/has";
 	public static final String NCDC_HAS_FTP_SERVER = "ftp.ncdc.noaa.gov";
 	public static final String NCDC_HAS_FTP_DIRECTORY = "pub/has";

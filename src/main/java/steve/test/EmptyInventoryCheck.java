@@ -39,20 +39,20 @@ public class EmptyInventoryCheck {
       
          for (int n=0; n<60; n++) {
             String id1 = "KFDX";
-            url1 = new URL("http://www.ncdc.noaa.gov/nexradinv/displayfiles.jsp"+
+            url1 = new URL("https://www.ncdc.noaa.gov/nexradinv/displayfiles.jsp"+
                "?id="+id1+"&yyyymmdd="+calendar.get(Calendar.YEAR)+""+
                fmt02.format(calendar.get(Calendar.MONTH)+1)+""+ 
                fmt02.format(calendar.get(Calendar.DATE))+"&tz=GMT&product=ADL3N0R)");
          
             String id2 = "KCAE";
-            url2 = new URL("http://www.ncdc.noaa.gov/nexradinv/displayfiles.jsp"+
+            url2 = new URL("https://www.ncdc.noaa.gov/nexradinv/displayfiles.jsp"+
                "?id="+id2+"&yyyymmdd="+calendar.get(Calendar.YEAR)+""+
                fmt02.format(calendar.get(Calendar.MONTH)+1)+""+ 
                fmt02.format(calendar.get(Calendar.DATE))+"&tz=GMT&product=ADL3N0R)");
                
 
             String id3 = "KLZK";
-            url3 = new URL("http://www.ncdc.noaa.gov/nexradinv/displayfiles.jsp"+
+            url3 = new URL("https://www.ncdc.noaa.gov/nexradinv/displayfiles.jsp"+
                "?id="+id3+"&yyyymmdd="+calendar.get(Calendar.YEAR)+""+
                fmt02.format(calendar.get(Calendar.MONTH)+1)+""+ 
                fmt02.format(calendar.get(Calendar.DATE))+"&tz=GMT&product=ADL3N0R)");
