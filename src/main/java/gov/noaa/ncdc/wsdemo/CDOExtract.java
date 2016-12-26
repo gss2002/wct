@@ -32,7 +32,7 @@ public class CDOExtract {
     public final static String CRN_WFS_URL = "http://gis.ncdc.noaa.gov/wfsconnector/com.esri.wfs.Esrimap/"+
     "WFS_crn?request=getfeature&service=WFS&version=1.0.0&typename=USClimateReferenceNetwork-0";
     
-    public final static String CRN_DATA_URL = "https://www.ncdc.noaa.gov/crn/xmldata2";
+    public final static String CRN_DATA_URL = "http://www.ncdc.noaa.gov/crn/xmldata2";
     
 //    private Map<String, String> crnIdMap = WSDemoUtils.getIdMap();
     

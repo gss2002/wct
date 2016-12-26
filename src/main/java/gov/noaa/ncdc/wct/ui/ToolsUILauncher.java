@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import ucar.httpservices.HTTPException;
 import ucar.httpservices.HTTPSession;
 import ucar.nc2.grib.collection.GribCollectionProto.GribCollection;
 import ucar.nc2.ncml.Aggregation;
@@ -186,7 +187,12 @@ public class ToolsUILauncher {
 	    frame.setVisible(true);
 
 	    UrlAuthenticatorDialog provider = new UrlAuthenticatorDialog(frame);
-	    HTTPSession.setGlobalCredentialsProvider(provider);
+	    try {
+			HTTPSession.setGlobalCredentialsProvider(provider);
+		} catch (HTTPException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	    HTTPSession.setGlobalUserAgent("ToolsUI v4.3");
 
 	    // set Authentication for accessing passsword protected services like TDS PUT

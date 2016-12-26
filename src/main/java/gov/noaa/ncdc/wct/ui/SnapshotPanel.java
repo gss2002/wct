@@ -374,8 +374,9 @@ public class SnapshotPanel extends JPanel {
     
     
     private void exportData() {
-    	WCTQuickExportUI exportUI = new WCTQuickExportUI(viewer, "snapshot_export_dir", "snapshot_export_file");
-    	exportUI.showExportRasterDialog(snapshotLayer.getRaster());
+    	WCTQuickExportUI exportUI = new WCTQuickExportUI(viewer, snapshotLayer.getRaster(),
+    			"snapshot_export_dir", "snapshot_export_file");
+    	exportUI.showExportDialog();
     }
     
 

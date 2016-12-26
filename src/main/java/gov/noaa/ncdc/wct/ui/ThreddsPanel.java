@@ -591,7 +591,7 @@ public class ThreddsPanel extends JPanel {
         try {
 
             ThreddsPanel panel = new ThreddsPanel();
-              String catalogURI = "https://www.ncdc.noaa.gov/thredds/catalog.xml";
+              String catalogURI = "http://www.ncdc.noaa.gov/thredds/catalog.xml";
 //            String catalogURI = "http://motherlode.ucar.edu:8080/thredds/catalog.xml";
 //            String catalogURI = "http://nomads.ncdc.noaa.gov/thredds/catalog.xml";
             

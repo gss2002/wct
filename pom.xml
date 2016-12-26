@@ -31,7 +31,6 @@
           <fork>true</fork>
           <source>1.8</source>
           <target>1.8</target>
-          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
       <plugin>
@@ -271,11 +270,6 @@
     		<groupId>swt</groupId>
     		<artifactId>swt</artifactId>
     		<version>4.5</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>javax.vecmath</groupId>
-    		<artifactId>vecmath</artifactId>
-    		<version>1.5.2</version>
     	</dependency>
     </dependencies>
 </project>

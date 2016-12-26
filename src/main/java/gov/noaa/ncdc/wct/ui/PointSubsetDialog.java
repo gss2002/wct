@@ -346,10 +346,11 @@ public class PointSubsetDialog extends JXDialog {
 		
 		JPanel panel = new JPanel(new RiverLayout());
 		
-		panel.setBorder(WCTUiUtils.myTitledTopBorder("General Point Subset Tool Options", 5, 5, 5, 5, TitledBorder.CENTER, TitledBorder.TOP));
+		panel.setBorder(WCTUiUtils.myTitledTopBorder("General Math Tool Options", 5, 5, 5, 5, TitledBorder.CENTER, TitledBorder.TOP));
 
         
-		panel.add("p", new JLabel("<html><center>Please select a file in the Data Selector window.</center></html>"));		
+		panel.add("p", new JLabel("<html><center>The Math Tool is only available<br>" +
+				"for multiple files or grid slices.</center></html>"));		
 		
 		
 		return panel;

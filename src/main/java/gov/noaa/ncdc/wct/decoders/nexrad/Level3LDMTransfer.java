@@ -285,7 +285,7 @@ System.out.println("STUCK IN WHILE LOOP");
    public static void main(String[] args) {
       try {
          //DecodeL3Header header = new DecodeL3Header();
-         //URL url = new URL("https://www1.ncdc.noaa.gov/pub/has/HAS000155503/7000KDTX_SDUS53_N0RDTX_200105252102");
+         //URL url = new URL("http://www1.ncdc.noaa.gov/pub/has/HAS000155503/7000KDTX_SDUS53_N0RDTX_200105252102");
          //URL url = new java.io.File("C:\\ViewerData\\HAS999900001\\7000KCLE_SDUS81_DPACLE_200211102333").toURL();         
          URL url = new java.io.File("D:\\Nexrad_Viewer_Test\\AntonKruger\\data\\ldm\\7000PGUM_SDUS50_N1PGUA_200411291858").toURL();
          

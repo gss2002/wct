@@ -63,7 +63,7 @@ public class HOMRSiteLists {
 		GeometryFactory geoFactory = new GeometryFactory();
 		int geoIndex = 0;
 		
-		List<String> lines = IOUtils.readLines(new URL("https://www.ncdc.noaa.gov/homr/file/nexrad-stations.txt").openStream());
+		List<String> lines = IOUtils.readLines(new URL("http://www.ncdc.noaa.gov/homr/file/nexrad-stations.txt").openStream());
 
 		StreamingShapefileExport shpExport = new StreamingShapefileExport(new File("C:\\work\\wct\\overlays\\wsr.shp"));
 		for (String line : lines) {

@@ -153,7 +153,7 @@ public class BaseMapManager {
     	else if (index == WCTViewer.AIRPORTS) {
     		return "ID";
     	}
-    	else if (index == WCTViewer.ASOS) {
+    	else if (index == WCTViewer.ASOS_AWOS) {
     		return "ASOSID";
     	}
     	else if (index == WCTViewer.CRN) {
@@ -534,21 +534,21 @@ public class BaseMapManager {
 
 		try {
 
-			url = ResourceUtils.getInstance().getJarResource(mapDataURL, ResourceUtils.RESOURCE_CACHE_DIR, "/shapefiles/asos.shp", viewer);
+			url = ResourceUtils.getInstance().getJarResource(mapDataURL, ResourceUtils.RESOURCE_CACHE_DIR, "/shapefiles/asos_awos.shp", viewer);
 			ShapefileDataStore ds = new ShapefileDataStore(url);
-			FeatureSource fs = ds.getFeatureSource("asos");
+			FeatureSource fs = ds.getFeatureSource("asos_awos");
 			Mark mark = sb.createMark(StyleBuilder.MARK_CIRCLE, new Color(102, 153, 255), new Color(102, 153, 255), 1);
 			Graphic gr = sb.createGraphic(null, mark, null);
 			Style style = sb.createStyle(sb.createPointSymbolizer(gr));
-			baseMapLayers.setElementAt( new DefaultMapLayer(fs, style, "U.S. ASOS Network"), WCTViewer.ASOS);
+			baseMapLayers.setElementAt( new DefaultMapLayer(fs, style, "U.S. ASOS Network"), WCTViewer.ASOS_AWOS);
 
-			Style labelStyle = generateLabelStyle(WCTViewer.ASOS, FONT_ARRAY[2], new Color(102, 153, 255), Color.BLACK, fs, 0.0, BaseMapStyleInfo.NO_MAX_SCALE);
-			baseMapLabelLayers.setElementAt( new DefaultMapLayer(fs, labelStyle, "LABELS_ASOS"), WCTViewer.ASOS);
+			Style labelStyle = generateLabelStyle(WCTViewer.ASOS_AWOS, FONT_ARRAY[2], new Color(102, 153, 255), Color.BLACK, fs, 0.0, BaseMapStyleInfo.NO_MAX_SCALE);
+			baseMapLabelLayers.setElementAt( new DefaultMapLayer(fs, labelStyle, "LABELS_ASOS"), WCTViewer.ASOS_AWOS);
 
-			baseMapStyleInfo.setElementAt( new BaseMapStyleInfo(1, new Color(102, 153, 255), new Color(102, 153, 255)), WCTViewer.ASOS);
+			baseMapStyleInfo.setElementAt( new BaseMapStyleInfo(1, new Color(102, 153, 255), new Color(102, 153, 255)), WCTViewer.ASOS_AWOS);
 
 		} catch (Exception e) {
-			System.out.println("EXCEPTION WHILE LOADING ASOS DATA");
+			System.out.println("EXCEPTION WHILE LOADING ASOS_AWOS DATA");
 			e.printStackTrace();
 		}
 

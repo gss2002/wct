@@ -53,12 +53,12 @@ class WCTDropTargetHandler implements DropTargetListener {
                 System.out.println(s);
                 
                 
-                if (s.startsWith("http://") || s.startsWith("https://") || s.startsWith("ftp://")) {
+                if (s.startsWith("http://") || s.startsWith("ftp://")) {
                     s = s.split("\n")[0];
                 }
                 
-                if (s.startsWith("https://www.ncdc.noaa.gov/cgi-bin/good-bye.pl?src=")) {
-                    s = s.replaceAll("https://www.ncdc.noaa.gov/cgi-bin/good-bye.pl\\?src=", "");
+                if (s.startsWith("http://www.ncdc.noaa.gov/cgi-bin/good-bye.pl?src=")) {
+                    s = s.replaceAll("http://www.ncdc.noaa.gov/cgi-bin/good-bye.pl\\?src=", "");
                 }
                 
                 if (s.contains(".html") && ! s.contains("/thredds/dodsC/")) {
@@ -96,8 +96,7 @@ class WCTDropTargetHandler implements DropTargetListener {
                     viewer.getDataSelector().loadData();
                 	
                 }
-                else if ((s.startsWith("http://") || s.startsWith("https://")) && 
-                		s.contains("/thredds/dodsC/") && s.endsWith(".html")) {
+                else if (s.startsWith("http://") && s.contains("/thredds/dodsC/") && s.endsWith(".html")) {
                     viewer.getDataSelector().setVisible(true);
                     viewer.getDataSelector().getDataSourcePanel().setDataType(WCTDataSourceDB.SINGLE_FILE);
                     String opendapLocation = s.substring(0, s.length()-5);

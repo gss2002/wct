@@ -28,6 +28,14 @@ import org.geotools.factory.FactoryConfigurationError;
 import org.geotools.feature.Feature;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.SchemaException;
+import org.geotools.map.DefaultMapLayer;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.Symbolizer;
+import org.geotools.styling.TextSymbolizer;
 import org.jdesktop.swingx.JXHyperlink;
 import org.jdesktop.swingx.JXLabel;
 import org.json.simple.parser.ParseException;
@@ -35,6 +43,7 @@ import org.json.simple.parser.ParseException;
 import com.lowagie.text.DocumentException;
 
 import gov.noaa.ncdc.common.RiverLayout;
+import gov.noaa.ncdc.nexradiv.BaseMapStyleInfo;
 
 public class CDOServicesUI extends WCTFrame {
 
@@ -79,13 +88,11 @@ public class CDOServicesUI extends WCTFrame {
     
     private void createGUI() {
         
-    	final Frame finalThis = this;
-    	
         JPanel listPanel = new JPanel();
         listPanel.setLayout(new RiverLayout());
         
         siteList = new JList<String>(new String[] { "-- Select year, month and list stations below --" });
-		final ListCellRenderer<? super String> defaultRenderer = siteList.getCellRenderer();
+		ListCellRenderer<? super String> defaultRenderer = siteList.getCellRenderer();
 		
         siteList.setCellRenderer(new ListCellRenderer<String>() {
 			@Override
@@ -139,28 +146,19 @@ public class CDOServicesUI extends WCTFrame {
         JPanel linkPanel = new JPanel();
         JXHyperlink ghcnLink = new JXHyperlink();
         ghcnLink.setText("Documentation");
-        ghcnLink.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				WCTUiUtils.browse(finalThis, "https://gis.ncdc.noaa.gov/geoportal/catalog/search/resource/details.page?id=gov.noaa.ncdc:C00861", "Error browsing to NOAA/NCEI");
-			}
+        ghcnLink.addActionListener(e -> {
+        	WCTUiUtils.browse(this, "https://gis.ncdc.noaa.gov/geoportal/catalog/search/resource/details.page?id=gov.noaa.ncdc:C00861", "Error browsing to NOAA/NCEI");
         });
         JXHyperlink cdoLink = new JXHyperlink();
         cdoLink.setText("Online Search/Access");
-        cdoLink.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				WCTUiUtils.browse(finalThis, "https://www.ncdc.noaa.gov/cdo-web/search?datasetid=GHCND", "Error browsing to NOAA/NCEI");
-			}
+        cdoLink.addActionListener(e -> {
+        	WCTUiUtils.browse(this, "http://www.ncdc.noaa.gov/cdo-web/search?datasetid=GHCND", "Error browsing to NOAA/NCEI");
         });
 
         JXHyperlink ftpLink = new JXHyperlink();
         ftpLink.setText("Data Files");
-        ftpLink.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				WCTUiUtils.browse(finalThis, "https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn", "Error browsing to NOAA/NCEI");
-			}
+        ftpLink.addActionListener(e -> {
+        	WCTUiUtils.browse(this, "https://www.ncdc.noaa.gov/data-access/land-based-station-data/land-based-datasets/global-historical-climatology-network-ghcn", "Error browsing to NOAA/NCEI");
         });
 
         linkPanel.add(new JLabel("GHCN-Daily: "));
@@ -318,7 +316,7 @@ public class CDOServicesUI extends WCTFrame {
             }
             else if (e.getActionCommand().equalsIgnoreCase("LOAD_DATA")) {
 				FeatureIterator iter = viewer.getStationPointSelectedFeatures().features();
-				final ArrayList<String> selectedStationList = new ArrayList<String>();
+				ArrayList<String> selectedStationList = new ArrayList<String>();
 				while (iter.hasNext()) {
 					selectedStationList.add(iter.next().getAttribute("station_id").toString());
 				}

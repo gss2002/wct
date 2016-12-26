@@ -24,7 +24,7 @@ public class SWDIAccessTest {
 	public static void process(String[] args) throws Exception {
 		
 		// example URL:
-		// https://www.ncdc.noaa.gov/swdiws/xml/nx3hail/20110404:20110405?tile=-95.303650,32.337040
+		// http://www.ncdc.noaa.gov/swdiws/xml/nx3hail/20110404:20110405?tile=-95.303650,32.337040
 		
 		double lat = 32.337040;
 		double lon = -95.303650;
@@ -53,7 +53,7 @@ public class SWDIAccessTest {
 		System.out.println(minLat+" to "+maxLat+"  "+minLon+" to "+maxLon);
 		for (int y=minLat; y<=maxLat; y++) {
 			for (int x=minLon; x<=maxLon; x++) {
-				URL tileURL = new URL("https://www.ncdc.noaa.gov/swdiws/csv/nx3hail/20110404:20110405?tile="+(x/10.0)+","+(y/10.0));
+				URL tileURL = new URL("http://www.ncdc.noaa.gov/swdiws/csv/nx3hail/20110404:20110405?tile="+(x/10.0)+","+(y/10.0));
 				readTile(tileURL, lat, lon, radiusInMiles);
 			}
 		}

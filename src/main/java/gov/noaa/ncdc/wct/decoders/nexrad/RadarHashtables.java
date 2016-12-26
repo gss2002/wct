@@ -1,6 +1,9 @@
 package gov.noaa.ncdc.wct.decoders.nexrad;
 
 
+import gov.noaa.ncdc.wct.ResourceUtils;
+import gov.noaa.ncdc.wct.WCTConstants;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,9 +17,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
-
-import gov.noaa.ncdc.wct.ResourceUtils;
-import gov.noaa.ncdc.wct.WCTConstants;
 
 /**
  *  Creates hashtables to represent lat, lon and elevation of ~160 nexrad sites.
@@ -38,9 +38,6 @@ public class RadarHashtables {
 
     private static RadarHashtables nxhash;
 
-    public enum SearchFilter { ALL, ALL_INCLUDING_TEST_SITES, TDWR_ONLY, NEXRAD_ONLY_NO_TEST_SITES };
-    
-    
     /**
      * Creates the hashtables for lat, lon and elev by reading
      * /shapefiles/wsr.dbf
@@ -295,7 +292,7 @@ public class RadarHashtables {
      * @param maxRange (in decimal degrees)
      * @return
      */
-    public String getClosestICAO(double lat, double lon, double maxRange, SearchFilter searchFilter) {
+    public String getClosestICAO(double lat, double lon, double maxRange) {
 
         double matchingDist = 9999999;
         String matchingIcao = null;
@@ -303,28 +300,6 @@ public class RadarHashtables {
         Enumeration keyEnum = nexhashLat.keys();
         while (keyEnum.hasMoreElements()) {
             Object key = keyEnum.nextElement();
-            
-            if (searchFilter == SearchFilter.TDWR_ONLY) {
-            	if (! key.toString().startsWith("T") || key.toString().startsWith("TJUA")) {
-            		continue;
-            	}
-            }
-            else if (searchFilter == SearchFilter.NEXRAD_ONLY_NO_TEST_SITES) {
-            	if ((key.toString().startsWith("T") && ! key.toString().startsWith("TJUA"))
-            			|| key.toString().startsWith("KCRI")
-            			|| key.toString().startsWith("NO")
-            			|| key.toString().startsWith("RO")
-            			|| key.toString().startsWith("C")) {
-            		continue;
-            	}
-            }
-            else if (searchFilter == SearchFilter.ALL) {
-            	if (key.toString().startsWith("KCRI")
-            			|| key.toString().startsWith("NO")
-            			|| key.toString().startsWith("RO")) {
-            		continue;
-            	}
-            }
 
             double keyLat = Double.parseDouble(nexhashLat.get(key).toString());
             double keyLon = Double.parseDouble(nexhashLon.get(key).toString());

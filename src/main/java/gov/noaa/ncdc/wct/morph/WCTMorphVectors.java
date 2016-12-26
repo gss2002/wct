@@ -44,7 +44,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class WCTMorphVectors {
 
-	public final static String SWDI_URL = "https://www.ncdc.noaa.gov/swdiws";
+	public final static String SWDI_URL = "http://www.ncdc.noaa.gov/swdiws";
 	
 	public final static SimpleDateFormat SWDI_DATE_FORMAT = new SimpleDateFormat("yyyyMMddHHmm");
 	public final static SimpleDateFormat ISO_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -492,7 +492,7 @@ public class WCTMorphVectors {
 			String dataset, Rectangle2D.Double extent, StringBuilder operationLog) throws IOException {
 		
 		
-		// ex: https://www.ncdc.noaa.gov/swdiws/csv/nx3mda/201105222240:201105222250?bbox=-94.5,37.0,-94.0,37.5
+		// ex: http://www.ncdc.noaa.gov/swdiws/csv/nx3mda/201105222240:201105222250?bbox=-94.5,37.0,-94.0,37.5
 		// 1. assemble URL
 		URL url = new URL(SWDI_URL+"/csv/"+dataset+"/"+
 				SWDI_DATE_FORMAT.format(begDate)+":"+SWDI_DATE_FORMAT.format(endDate)+"/?bbox="+

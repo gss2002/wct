@@ -1404,11 +1404,11 @@ boolean isRasterVariableRes = ! clipToExtent; // use current extent
          // Load DPA RasterLayer
          //                                                 0         1         2         3         4         5         6
          //                                                 0123456789012345678901234567890123456789012345678901234567890
-         //URL nexrad_url = new URL("https://www1.ncdc.noaa.gov/pub/has/HAS000085249/7000KAKQ_SDUS81_DPAAKQ_200309190001");
+         //URL nexrad_url = new URL("http://www1.ncdc.noaa.gov/pub/has/HAS000085249/7000KAKQ_SDUS81_DPAAKQ_200309190001");
 
          // DETERMINE HERE WHICH KIND OF FILE WE ARE LOOKING AT BY SCANNING THROUGHT THE FILE NAME W/ INDEXOF FOR THE 3LETTER PRODUCT CODE
 
-         //URL nexrad_url = new URL("https://www1.ncdc.noaa.gov/" + nexradFile);
+         //URL nexrad_url = new URL("http://www1.ncdc.noaa.gov/" + nexradFile);
 
          //================================================================================
          // Lazy object creation

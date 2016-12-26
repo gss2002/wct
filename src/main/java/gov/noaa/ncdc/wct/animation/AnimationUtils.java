@@ -296,11 +296,6 @@ public class AnimationUtils {
                 }
                 
                 
-                
-                
-                
-                
-                
                 if (images == null) {
                 	return;
                 }
@@ -328,13 +323,8 @@ public class AnimationUtils {
 
                 	}
                 	else {
-                		saveName = viewer.getFileScanner().getSaveName();
-                		if (viewer.getFileScanner().getLastScanResult().getDataType() == SupportedDataType.UNKNOWN ||
-                				saveName == null || saveName.equalsIgnoreCase("null") || saveName.trim().length() == 0) {
-                			saveName = viewer.getFileScanner().getLastScanResult().getFileName();
-                		}
-                		
                 		displayName = viewer.getFileScanner().getLastScanResult().getDisplayName();
+                		saveName = viewer.getFileScanner().getSaveName();
 
                 	}
 

@@ -30,7 +30,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 public class CDOServicesSupport {
 
 	public final static String TOKEN = "qxRPadRTvthzHgpKBOhRRRXHPfQtODKi";	
-	public final static String BASE_URL = "https://www.ncdc.noaa.gov/cdo-web/api/v2/";
+	public final static String BASE_URL = "http://www.ncdc.noaa.gov/cdo-web/api/v2/";
 	public final static int LIMIT = 100;
 	
 	public final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -390,8 +390,8 @@ public class GridDatasetRemappedRaster implements WCTRaster {
 			}
 			
 			
-			logger.info("-------- forceResample: "+forceResample);
-			logger.info("-------- coordSys isRegularSpatial: "+this.coordSys.isRegularSpatial());
+			System.out.println("-------- forceResample: "+forceResample);
+			System.out.println("-------- coordSys isRegularSpatial: "+this.coordSys.isRegularSpatial());
 			
 
 			// override for lat/lon non-projected data
@@ -829,13 +829,13 @@ public class GridDatasetRemappedRaster implements WCTRaster {
 		int rowsRead = 0;
 		int maxCellRead = 4*500000;
 		int rowsToRead = (int) maxCellRead/ncols;
-		logger.info("rowsToRead: "+rowsToRead);
+		System.out.println("rowsToRead: "+rowsToRead);
 		while (rowsRead < nrows) {
 			if (rowsRead+rowsToRead > nrows) {
 				rowsToRead = nrows-rowsRead;
 			}
 
-			logger.info("rowsRead: "+rowsRead);
+			System.out.println("rowsRead: "+rowsRead);
 			GridDatatype subsetGrid = grid.makeSubset(null, null, 
 					new Range(timeIndex, timeIndex), 
 					new Range(zIndex, zIndex), 
@@ -843,7 +843,7 @@ public class GridDatasetRemappedRaster implements WCTRaster {
 					null);
 
 			MinMax minMax = subsetGrid.getMinMaxSkipMissingData( subsetGrid.readDataSlice(-1, -1, -1, -1) );
-			logger.info("chunk ("+rowsRead+" to "+(rowsRead+rowsToRead)+") min/max: "+minMax.min + " / " + minMax.max);
+			System.out.println("chunk ("+rowsRead+" to "+(rowsRead+rowsToRead)+") min/max: "+minMax.min + " / " + minMax.max);
 			if (gridMaxValue < minMax.max) {
 				gridMaxValue = minMax.max;
 			}
@@ -861,8 +861,8 @@ public class GridDatasetRemappedRaster implements WCTRaster {
 		validRangeMinValue = grid.getVariable().getValidMin();
 		validRangeMaxValue = grid.getVariable().getValidMax();
 
-		logger.info("      histo max/min: "+gridMinValue+" / "+gridMaxValue);
-		logger.info("valid_range max/min: "+hasValidRange+" -- "+validRangeMinValue+" / "+validRangeMaxValue);
+		System.out.println("      histo max/min: "+gridMinValue+" / "+gridMaxValue);
+		System.out.println("valid_range max/min: "+hasValidRange+" -- "+validRangeMinValue+" / "+validRangeMaxValue);
 
 		//        this.gds.close();
 	}
@@ -1033,48 +1033,48 @@ public class GridDatasetRemappedRaster implements WCTRaster {
 
 		
 		
-//		try {
-//			
-//			System.out.println(" ------------ trying to convert from: "+this.units + " to "+this.convertedUnits);
-//			
-//			
-//			
-//
-//			Unit nativeUnit = null;
-//			Unit convertedUnit = null;			
-//			if (this.units != null && this.convertedUnits != null) {
-//				
-//				nativeUnit = UnitDBManager.instance().getByName(this.units);
-//				if (nativeUnit == null) {
-//					nativeUnit = UnitDBManager.instance().getBySymbol(this.units);
-//				}
-//				convertedUnit = UnitDBManager.instance().getByName(this.convertedUnits);
-//				if (convertedUnit == null) {
-//					convertedUnit = UnitDBManager.instance().getBySymbol(this.convertedUnits);
-//				}
-//
-//				System.out.println(nativeUnit + " to " + convertedUnit);
-//			}
-//
-//			// convert units if so desired
-//			if (nativeUnit != null && convertedUnit != null) {
-//				gridMinValue = nativeUnit.convertTo(gridMinValue, convertedUnit);												
-//				gridMaxValue = nativeUnit.convertTo(gridMaxValue, convertedUnit);												
-//				validRangeMinValue = nativeUnit.convertTo(validRangeMinValue, convertedUnit);												
-//				validRangeMaxValue = nativeUnit.convertTo(validRangeMaxValue, convertedUnit);
-//				IndexIterator indexIter = dataCache.getIndexIterator();
-//				while (indexIter.hasNext()) {
-//					indexIter.setDoubleCurrent(nativeUnit.convertTo(indexIter.getDoubleNext(), convertedUnit));
-//				}
-//				
-//				this.units = this.convertedUnits;
-//
-//			}
-//
-//		
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		try {
+			
+			System.out.println(" ------------ trying to convert from: "+this.units + " to "+this.convertedUnits);
+			
+			
+			
+
+			Unit nativeUnit = null;
+			Unit convertedUnit = null;			
+			if (this.units != null && this.convertedUnits != null) {
+				
+				nativeUnit = UnitDBManager.instance().getByName(this.units);
+				if (nativeUnit == null) {
+					nativeUnit = UnitDBManager.instance().getBySymbol(this.units);
+				}
+				convertedUnit = UnitDBManager.instance().getByName(this.convertedUnits);
+				if (convertedUnit == null) {
+					convertedUnit = UnitDBManager.instance().getBySymbol(this.convertedUnits);
+				}
+
+				System.out.println(nativeUnit + " to " + convertedUnit);
+			}
+
+			// convert units if so desired
+			if (nativeUnit != null && convertedUnit != null) {
+				gridMinValue = nativeUnit.convertTo(gridMinValue, convertedUnit);												
+				gridMaxValue = nativeUnit.convertTo(gridMaxValue, convertedUnit);												
+				validRangeMinValue = nativeUnit.convertTo(validRangeMinValue, convertedUnit);												
+				validRangeMaxValue = nativeUnit.convertTo(validRangeMaxValue, convertedUnit);
+				IndexIterator indexIter = dataCache.getIndexIterator();
+				while (indexIter.hasNext()) {
+					indexIter.setDoubleCurrent(nativeUnit.convertTo(indexIter.getDoubleNext(), convertedUnit));
+				}
+				
+				this.units = this.convertedUnits;
+
+			}
+
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 
 		for (int n = 0; n < listeners.size(); n++) {

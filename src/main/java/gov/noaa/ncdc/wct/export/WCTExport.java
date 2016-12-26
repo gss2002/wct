@@ -822,7 +822,7 @@ implements DataDecodeListener, GeneralProgressListener {
                 // no spatial subset
                 if (exportGridSatelliteFilter.getExtentFilter() == null) {
                 	
-                	logger.info("INFO:::::::::: "+grid.isNative()+" ... "+grid.isRegularLatLon());
+                	System.out.println("STEVE:::::::::: "+grid.isNative()+" ... "+grid.isRegularLatLon());
                 	
                     if (grid.isNative() && grid.isRegularLatLon()) {
                     	// native lat/lon grid
@@ -854,14 +854,14 @@ implements DataDecodeListener, GeneralProgressListener {
                     
 //                    grid.scan(dataURL.toString());
                     if ((! forceResample) &&  grid.isNative() && grid.isRegularLatLon()) {
-                        logger.info("Native regular lat/lon grid found in WCTExport");
+                        System.out.println("Native regular lat/lon grid found in WCTExport");
                         
                         if (outputFormat == ExportFormat.GRIDDED_NETCDF) {
 
                             LatLonRect subsetBbox = new LatLonRect(new LatLonPointImpl(bounds.getMinY(), bounds.getMinX()), 
                                     new LatLonPointImpl(bounds.getMaxY(), bounds.getMaxX()));
 
-//                            logger.info(Arrays.asList(new String[] { grid.getLastProcessedGridDatatype().getName() }));
+//                            System.out.println(Arrays.asList(new String[] { grid.getLastProcessedGridDatatype().getName() }));
 
                             StringBuilder errlog = new StringBuilder();
                             GridDataset gds = GridDatasetUtils.openGridDataset(dataURL.toString(), errlog);
@@ -905,8 +905,7 @@ implements DataDecodeListener, GeneralProgressListener {
                         }
                     }
                     else {
-                    	logger.info(" PROCESSING traditional resampled grid");
-                    	logger.info("  GRID EXTENT USED: "+exportGridSatelliteFilter.getExtentFilter());
+                    	System.out.println(" PROCESSING traditional resampled grid");
                         grid.process(dataURL.toString(), exportGridSatelliteFilter.getExtentFilter());
                         genericRaster = grid;
                     }
@@ -1507,10 +1506,7 @@ implements DataDecodeListener, GeneralProgressListener {
                 decoder.decodeData(new StreamingProcess[] { streamingProcess });
             }
             else if (outputFormat == ExportFormat.CSV) {
-//                throw new WCTExportException("CSV EXPORT IS NOT SUPPORTED FOR THIS FILE TYPE");
-            	StreamingCsvExport streamingProcess = new StreamingCsvExport(file);
-                streamingProcess.addGeneralProgressListener(this);
-                decoder.decodeData(new StreamingProcess[] { streamingProcess });
+                throw new WCTExportException("CSV EXPORT IS NOT SUPPORTED FOR THIS FILE TYPE");
             }
             else if (outputFormat == ExportFormat.GEOTIFF_GRAYSCALE_8BIT ||
                     outputFormat == ExportFormat.GEOTIFF_32BIT ||
@@ -1561,7 +1557,7 @@ implements DataDecodeListener, GeneralProgressListener {
                     rasterizer.setStandardName("");
                     rasterizer.setVariableName(NexradUtilities.getVariableName(header));
 
-//                    logger.info("setting variable name for radial data");
+//                    System.out.println("setting variable name for radial data");
                     
                     // Set smoothing
                     //rasterizer.setSmoothing((exportGridSmoothFactor > 0));

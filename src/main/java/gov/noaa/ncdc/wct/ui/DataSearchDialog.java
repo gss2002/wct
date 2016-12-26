@@ -4,7 +4,6 @@ import gov.noaa.ncdc.common.RiverLayout;
 import gov.noaa.ncdc.gis.GoogleGeocoder;
 import gov.noaa.ncdc.gis.GoogleGeocoder.GoogleGeocodeResult;
 import gov.noaa.ncdc.wct.decoders.nexrad.RadarHashtables;
-import gov.noaa.ncdc.wct.decoders.nexrad.RadarHashtables.SearchFilter;
 import gov.noaa.ncdc.wct.io.WCTDataSourceDB;
 
 import java.awt.Desktop;
@@ -376,8 +375,8 @@ public class DataSearchDialog extends JDialog {
 	
 	private void findNexradData(double lat, double lon) {
 		RadarHashtables radhash = RadarHashtables.getSharedInstance();
-		String closestId = radhash.getClosestICAO(lat, lon, 999999999, SearchFilter.ALL);
-		final String nexradinvUrl = "https://www.ncdc.noaa.gov/nexradinv/chooseday.jsp?id="+closestId.toLowerCase();
+		String closestId = radhash.getClosestICAO(lat, lon, 999999999);
+		final String nexradinvUrl = "http://www.ncdc.noaa.gov/nexradinv/chooseday.jsp?id="+closestId.toLowerCase();
 		
 		final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));

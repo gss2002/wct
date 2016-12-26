@@ -1459,9 +1459,8 @@ public class RadialDatasetSweepRemappedRaster implements WCTRaster {
 
 							//                  System.out.println(beamHeightInKM+" , "+heightASL);
 
-							
-							// keep going if RF or no data
-							if (value == rangeFoldedValue || Float.isNaN(value)) {
+							// keep going if no data
+							if (Float.isNaN(value)) {
 								continue;
 							}
 
@@ -1470,12 +1469,20 @@ public class RadialDatasetSweepRemappedRaster implements WCTRaster {
 								value *= 1.9438445;
 							}   
 
-	
-							// check filter 'within bounds'
-							if (wctFilter != null && ! wctFilter.accept(value, azimuth, distance, heightASL)) {
-								continue;
+							// handle rf values 
+							if (value == rangeFoldedValue) {
+								//                    System.out.println(value);
+								value = 800;
+								if (wctFilter != null && ! wctFilter.accept(wctFilter.getMinValue()[0]+0.000001, azimuth, distance, heightASL)) {
+									continue;
+								}
 							}
-
+							else {
+								// check filter 'within bounds'
+								if (wctFilter != null && ! wctFilter.accept(value, azimuth, distance, heightASL)) {
+									continue;
+								}
+							}
 
 
 
@@ -1487,15 +1494,11 @@ public class RadialDatasetSweepRemappedRaster implements WCTRaster {
 							// if we have both a sweep above and below, do a distance-weighted average
 							if (ci == 1) {
 								float firstVal = this.raster.getSampleFloat(x, height-y-1, c);
-								
-								
-//								System.out.print(".. doing interpolation  firstVal="+firstVal+"  value="+value);
-								
-								if (Float.isNaN(firstVal) || firstVal > 200) {
+								if (Float.isNaN(firstVal) || firstVal == 800) {
 									this.raster.setSample(x, height-y-1, c, value);
 								}
-								else if (value > 200) {
-									value = firstVal; // do nothing, new value is RF so keep the previous value
+								else if (value == 800) {
+									; // do nothing, new value is RF so keep the previous value
 								}
 								else {
 									//								System.out.println("sweep: "+closestCappiSweepIndices[0] + 
@@ -1508,7 +1511,11 @@ public class RadialDatasetSweepRemappedRaster implements WCTRaster {
 									//								float avg = (firstVal*lowerSweepWeight + value*upperSweepWeight) / 
 									//										(lowerSweepWeight + upperSweepWeight);
 //									float avg = 0;
-		
+									
+//									if (firstVal >= rangeFoldedValue - 100 || value >= rangeFoldedValue - 100) {
+//										System.out.println("rangefoldedvalue="+rangeFoldedValue+"  firstVal="+firstVal+"  value="+value);
+//									}
+									
 									if (cappiType == CAPPIType.LINEAR_WEIGHTED_AVERAGE) {
 										value = (firstVal*cappiSweepIndexInfo[2] + value*cappiSweepIndexInfo[1]) /
 												(cappiSweepIndexInfo[1] + cappiSweepIndexInfo[2]);
@@ -1520,11 +1527,8 @@ public class RadialDatasetSweepRemappedRaster implements WCTRaster {
 									}
 									
 									//								System.out.println("     weighted avg: "+avg);
-									
-								}	
-								
-								
-//								System.out.println("  return val: "+value);
+							
+								}							
 							}
 							
 							if (cappiType == CAPPIType.DIST_TO_SWEEP_CENTER) {
@@ -1544,7 +1548,36 @@ public class RadialDatasetSweepRemappedRaster implements WCTRaster {
 								maxValue = value;
 							}
 
-							
+
+
+							//						if (Float.isNaN(this.raster.getSampleFloat(x, height-y-1, c)) ||
+							//								value > this.raster.getSampleFloat(x, height-y-1, c) ) {                     }   
+							//
+							//							this.raster.setSample(x, height-y-1, c, value);
+							//
+							//							if (value < minValue) {
+							//								minValue = value;
+							//							}
+							//							if (value > maxValue) {
+							//								maxValue = value;
+							//							}
+							//						}   
+
+
+							//						if (Float.isNaN(this.raster.getSampleFloat(x, height-y-1, c)) ||
+							//								value > this.raster.getSampleFloat(x, height-y-1, c) ) {                     }   
+							//
+							//							this.raster.setSample(x, height-y-1, c, value);
+							//
+							//							if (value < minValue) {
+							//								minValue = value;
+							//							}
+							//							if (value > maxValue) {
+							//								maxValue = value;
+							//							}
+							//						}                        
+
+
 						}
 
 

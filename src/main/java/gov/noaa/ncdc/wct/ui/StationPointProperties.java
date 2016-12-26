@@ -7,7 +7,6 @@ import gov.noaa.ncdc.wct.WCTProperties;
 import gov.noaa.ncdc.wct.WCTUtils;
 import gov.noaa.ncdc.wct.decoders.StreamingProcess;
 import gov.noaa.ncdc.wct.decoders.StreamingProcessException;
-import gov.noaa.ncdc.wct.export.WCTExportDialog;
 import gov.noaa.ncdc.wct.export.WCTExport.ExportFormat;
 import gov.noaa.ncdc.wct.export.vector.StreamingCsvExport;
 import gov.noaa.ncdc.wct.export.vector.StreamingShapefileExport;
@@ -307,35 +306,32 @@ public class StationPointProperties extends JDialog {
 			}
 		});
 
-		jcomboVariables.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		jcomboVariables.addActionListener(e -> {
 
-				FeatureDatasetPoint fdp = null;
-				if (fd != null && fd.getFeatureType().isPointFeatureType()) {
-					fdp = (FeatureDatasetPoint)fd;
-				}
-				else {
-					WCTUiUtils.showErrorMessage(finalThis, "Data does not appear to be of CDM type 'FeatureDatasetPoint'  ", new IOException());
-				}
-
-				//		get unique date list		
-				try {
-					Variable currentVariable = fdp.getNetcdfFile().findVariable(jcomboVariables.getSelectedItem().toString());
-					List<String> uniqueDateList = getUniqueTimeList(((FeatureDatasetPoint)fd), currentVariable);
-					System.out.println(currentVariable);
-					jcomboUniqueDates.setModel(new DefaultComboBoxModel<String>(uniqueDateList.toArray(new String[uniqueDateList.size()])));
-					jcomboUniqueDates.setEnabled(true);
-
-				} catch (NoSharedTimeDimensionException ex) {
-					ex.printStackTrace();
-					jcomboUniqueDates.setModel(new DefaultComboBoxModel<String>(new String[] { "Not Supported (Requires Shared Time Dimension)" } ));
-					jcomboUniqueDates.setEnabled(false);
-				} catch (IOException ex) {
-					WCTUiUtils.showErrorMessage(finalThis, "Error obtaining unique time list", ex);
-				}
-
+			FeatureDatasetPoint fdp = null;
+			if (fd != null && fd.getFeatureType().isPointFeatureType()) {
+				fdp = (FeatureDatasetPoint)fd;
 			}
+			else {
+				WCTUiUtils.showErrorMessage(finalThis, "Data does not appear to be of CDM type 'FeatureDatasetPoint'  ", new IOException());
+			}
+
+			//		get unique date list		
+			try {
+				Variable currentVariable = fdp.getNetcdfFile().findVariable(jcomboVariables.getSelectedItem().toString());
+				List<String> uniqueDateList = getUniqueTimeList(((FeatureDatasetPoint)fd), currentVariable);
+				System.out.println(currentVariable);
+				jcomboUniqueDates.setModel(new DefaultComboBoxModel<String>(uniqueDateList.toArray(new String[uniqueDateList.size()])));
+				jcomboUniqueDates.setEnabled(true);
+
+			} catch (NoSharedTimeDimensionException ex) {
+				ex.printStackTrace();
+				jcomboUniqueDates.setModel(new DefaultComboBoxModel<String>(new String[] { "Not Supported (Requires Shared Time Dimension)" } ));
+				jcomboUniqueDates.setEnabled(false);
+			} catch (IOException ex) {
+				WCTUiUtils.showErrorMessage(finalThis, "Error obtaining unique time list", ex);
+			}
+
 		});
 
 		jeksTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
@@ -442,38 +438,16 @@ public class StationPointProperties extends JDialog {
 		});
 		
 		
-//		this.add("p", new JLabel("Symbolize Date on Map: "));
-//		//		this.add(jcomboUniqueDates);
-//		this.add(exportDate);
-//		this.add(new JLabel(" (all stations for selected date)"));
-//
-//		JButton exportTimeSeries = new JButton("Export Time Series");
-//		this.add("p", exportTimeSeries);
-//		this.add(new JLabel("  [selected station]  "));
+		this.add("p", new JLabel("Symbolize Date on Map: "));
+		//		this.add(jcomboUniqueDates);
+		this.add(exportDate);
+		this.add(new JLabel(" (all stations for selected date)"));
 
-		JButton exportButton = new JButton("Export Data (CSV, JSON, SHP)");
-		exportButton.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		JButton exportTimeSeries = new JButton("Export Time Series");
+		this.add("p", exportTimeSeries);
+		this.add(new JLabel("  [selected station]  "));
 
-                try {
-                    
-                    WCTExportDialog wizard = new WCTExportDialog("Data Export Wizard", viewer);
-                    wizard.pack();
-                    wizard.setLocationRelativeTo(finalThis);
-                    wizard.setVisible(true);                    
-                
-                    viewer.getDataSelector().checkCacheStatus();
-                    System.out.println("data export wizard done");
 
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(finalThis, ex.getMessage());
-                }
-				
-			}
-		});
-		this.add("p", exportButton);
 
 
 
@@ -600,8 +574,6 @@ public class StationPointProperties extends JDialog {
 		});
 	}
 
-
-	
 	public void exportData() throws NoSuchElementException, StreamingProcessException, IOException {
 
 		// Set up File Chooser

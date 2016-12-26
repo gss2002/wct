@@ -55,8 +55,8 @@ import gov.noaa.ncdc.wct.io.DirectoryScanner.ListResults;
 public class MetadataParser {
 
 	public final static String[] BLACK_LIST_URLS_TO_EXCLUDE = 
-		{ "https://www.ncdc.noaa.gov",
-		  "https://www.ncdc.noaa.gov/"
+		{ "http://www.ncdc.noaa.gov",
+		  "http://www.ncdc.noaa.gov/"
 		};
 
 	public final static String[] BLACK_LIST_EXTENSIONS_TO_EXCLUDE = 
@@ -65,7 +65,7 @@ public class MetadataParser {
 
 	public static void main(String[] args) {
 		try {
-			URL dir = new URL("https://www1.ncdc.noaa.gov/pub/data/metadata/published/geoportal/iso/xml/");
+			URL dir = new URL("http://www1.ncdc.noaa.gov/pub/data/metadata/published/geoportal/iso/xml/");
 			URL weblog = new File("C:\\work\\weblogs\\ncdc-hostgw1.20150521").toURI().toURL();
 			
 			processDir(dir, weblog);

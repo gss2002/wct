@@ -48,16 +48,10 @@ public class WCTUtils {
 	public final static DecimalFormat DECFMT_pDpppp = new DecimalFormat("#.####");
     public final static SimpleDateFormat ISO_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
     public final static SimpleDateFormat ESRI_DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public final static SimpleDateFormat DATE_HOUR_MIN_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    public final static SimpleDateFormat YYYYMMDD_FORMATTER = new SimpleDateFormat("yyyyMMdd");
-    public final static SimpleDateFormat SCAN_RESULTS_FORMATTER = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
     
     static {
     	ISO_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
     	ESRI_DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
-    	DATE_HOUR_MIN_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
-    	YYYYMMDD_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
-    	SCAN_RESULTS_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
 

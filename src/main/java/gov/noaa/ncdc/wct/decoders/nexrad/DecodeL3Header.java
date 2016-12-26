@@ -18,7 +18,6 @@ package gov.noaa.ncdc.wct.decoders.nexrad;
 import gov.noaa.ncdc.nexrad.NexradEquations;
 import gov.noaa.ncdc.wct.decoders.DecodeException;
 import gov.noaa.ncdc.wct.decoders.MaxGeographicExtent;
-import gov.noaa.ncdc.wct.decoders.nexrad.RadarHashtables.SearchFilter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -600,7 +599,7 @@ System.out.println();
             lat = f.readInt() / 1000.0;
             lon = f.readInt() / 1000.0;
 
-            String approxICAO = nxhash.getClosestICAO(lat, lon, 0.05, SearchFilter.ALL_INCLUDING_TEST_SITES);
+            String approxICAO = nxhash.getClosestICAO(lat, lon, 0.05);
             
             
 //            System.out.println("NEXRAD IDs::::::::::::::: "+icao+", "+approxICAO);

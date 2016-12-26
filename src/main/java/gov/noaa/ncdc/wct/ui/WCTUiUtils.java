@@ -15,7 +15,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -24,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 import gov.noaa.ncdc.common.SwingWorker;
+import gov.noaa.ncdc.wct.WCTUtils;
 import gov.noaa.ncdc.wct.io.ScanResults;
 
 public class WCTUiUtils {
@@ -72,7 +72,7 @@ public class WCTUiUtils {
 //            props.load(in);
 //            in.close();
 //            return props.getProperty("version");
-            return "4.0.4";
+            return "4.0.1";
         } catch (Exception e) {
             e.printStackTrace();
             return "?";
@@ -80,18 +80,16 @@ public class WCTUiUtils {
     }
 
     public static String checkCurrentStableVersion() {
-        return checkVersion("https://www.ncdc.noaa.gov/wct/app/version-stable.dat");
+        return checkVersion("http://www.ncdc.noaa.gov/wct/app/version-stable.dat");
     }
     public static String checkCurrentBETAVersion() {
-        return checkVersion("https://www.ncdc.noaa.gov/wct/app/version-beta.dat");
+        return checkVersion("http://www.ncdc.noaa.gov/wct/app/version-beta.dat");
     }
     private static String checkVersion(String versionUrlString) {
         BufferedReader in = null;
         try {
-            URLConnection urlConn = new URL(versionUrlString).openConnection();
-            urlConn.setConnectTimeout(1000);
-            urlConn.setReadTimeout(1000);
-            in = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
+            URL url = new URL(versionUrlString);
+            in = new BufferedReader(new InputStreamReader(url.openStream()));
             String currentVersion;
             if ((currentVersion = in.readLine()) == null) {
                 return "?";
