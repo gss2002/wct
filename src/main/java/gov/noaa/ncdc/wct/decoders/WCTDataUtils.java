@@ -105,6 +105,9 @@ public class WCTDataUtils {
             else if (scannedFile.getLastScanResult().getDataType() == SupportedDataType.RADIAL) {
                 dataURL = WCTTransfer.getURL(dataURL, null, ! useWctCache, owner, progressListeners);  
                 // HARD CODE - for right now, all Level2 files will be checked for "AR2V0001" partial BZIP format
+                logger.info("!GS RADIAL DECOMPRESS!");
+            	Thread.dumpStack();
+
                 dataURL = Level2Transfer.decompressAR2V0001(dataURL, ! useWctCache);
                 scannedFile.scanURL(dataURL);
             }
@@ -115,6 +118,9 @@ public class WCTDataUtils {
                 }               
                 // everything else is treated as grid, check for point here?  or wait?
                 else {
+                	logger.info("!GS EVERYTHING ELSE!");
+                	Thread.dumpStack();
+
                     dataURL = WCTTransfer.getURL(dataURL, null, ! useWctCache, owner, progressListeners);
                 }
             }

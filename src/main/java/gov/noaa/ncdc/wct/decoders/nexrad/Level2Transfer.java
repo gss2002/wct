@@ -17,6 +17,7 @@ package gov.noaa.ncdc.wct.decoders.nexrad;
 
 import gov.noaa.ncdc.nexrad.NexradEquations;
 import gov.noaa.ncdc.wct.WCTConstants;
+import gov.noaa.ncdc.wct.decoders.WCTDataUtils;
 import gov.noaa.ncdc.wct.io.WCTTransfer;
 
 import java.awt.Frame;
@@ -34,6 +35,8 @@ import java.util.zip.GZIPInputStream;
 
 import org.apache.tools.bzip2.CBZip2InputStream;
 
+import java.util.logging.Logger;
+
 import ucar.unidata.io.UncompressInputStream;
 
 
@@ -47,7 +50,8 @@ public class Level2Transfer {
 
    
    public static final File TEMP_DIR = new File(WCTConstants.getInstance().getDataCacheLocation());
-   
+   private static final Logger logger = Logger.getLogger(Level2Transfer.class.getName());
+
    
    /**
     *  Gets the Level2 GZIP Nexrad file from NCDC FTP Server.  Decompresses file after retrieval.
@@ -270,13 +274,14 @@ System.out.println("DECOMPRESSING: "+nexradURL);
    
    
    public static URL decompressAR2V0001(URL nexradURL, File uncompressedFile, boolean overwrite) throws MalformedURLException, IOException {   
+		Thread.dumpStack();
 
        if (! TEMP_DIR.exists()) {
            TEMP_DIR.mkdirs();
        }
-
-      
-      ucar.unidata.io.RandomAccessFile f;
+   logger.info("!GS DECOMPRESS!");
+       
+	ucar.unidata.io.RandomAccessFile f;
          
          if (nexradURL.getProtocol().equals("file")) {
             f = new ucar.unidata.io.RandomAccessFile(new URL(URLDecoder.decode(nexradURL.toString(), "UTF-8")).getFile(), "r");
@@ -321,6 +326,8 @@ System.out.println("DECOMPRESSING: "+nexradURL);
                   
          //see if we have to uncompress
          if (dataFormat.equals("AR2V0001")) {
+        	   logger.info("!GS DECOMPRESS AR2V!");
+
             f.skipBytes(4);
             String BZ = f.readString(2);
          
@@ -328,6 +335,8 @@ System.out.println("DECOMPRESSING: "+nexradURL);
             
          
             if (BZ.equals("BZ")) {
+            	   logger.info("!GS DECOMPRESS AR2V BZ!");
+
                ucar.unidata.io.RandomAccessFile uraf = null;
                
                
@@ -377,7 +386,9 @@ System.out.println("DECOMPRESSING: "+nexradURL);
       throws IOException {
          
          
-     
+	logger.info("!GS UNCOMPRESS!");
+	Thread.dumpStack();
+
     ucar.unidata.io.RandomAccessFile dout2 = new ucar.unidata.io.RandomAccessFile(ufilename, "rw");
     raf2.seek(0);
     byte[] header = new byte[Level2Format.FILE_HEADER_SIZE];

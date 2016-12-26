@@ -1,5 +1,5 @@
 /**
- * NOAA's National Climatic Data Center
+f * NOAA's National Climatic Data Center
  * NOAA/NESDIS/NCDC
  * 151 Patton Ave, Asheville, NC  28801
  * 
@@ -1031,7 +1031,7 @@ implements DataDecodeListener, GeneralProgressListener {
                           FeatureType.RADIAL, 
                           dataURL.toString(), WCTUtils.getSharedCancelTask(), new StringBuilder());
 
-                
+              logger.info("DataURL: "+ dataURL.toString());
                 
               if (radialDatasetHeader == null) {
                   radialDatasetHeader = new DecodeRadialDatasetSweepHeader();
@@ -1095,6 +1095,8 @@ implements DataDecodeListener, GeneralProgressListener {
                     radialDatasetRaster.setSweepIndex(radialExportCut);
                     radialDatasetRaster.setWctFilter(wctFilter);
                     dataURL = WCTDataUtils.scan(dataURL, scannedFile, useWctCache, true, SupportedDataType.RADIAL);
+                    logger.info("DATAURL 2: "+ dataURL);
+                	Thread.dumpStack();
                     if (Double.isNaN(radialExportCappiHeightInMeters)) {
                     	radialDatasetRaster.process(dataURL.toString(), bounds);
                     }
