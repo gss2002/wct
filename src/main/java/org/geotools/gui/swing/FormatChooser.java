@@ -82,15 +82,15 @@ public class FormatChooser extends JPanel {
      * A set of default pattern for {@link AngleFormat}.
      */
     private static final String[] ANGLE_PATTERNS = new String[] {
-        "D.d°",
-        "D.dd°",
-        "D.ddd°",
-        "D°MM'",
-        "D°MM.m'",
-        "D°MM.mm'",
-        "D°MM.mmm'",
-        "D°MM'SS\"",
-        "D°MM'SS.s\""
+        "D.d",
+        "D.dd",
+        "D.ddd",
+        "DMM'",
+        "DMM.m'",
+        "DMM.mm'",
+        "DMM.mmm'",
+        "DMM'SS\"",
+        "DMM'SS.s\""
     };
 
     /**

@@ -101,7 +101,7 @@ import org.geotools.resources.gui.Resources;
  *   <li>{@link #getArea()}, which must return a bounding box for the content
  *       to paint. This area can be expressed in arbitrary units. For example,
  *       an object wanting to display a geographic map with a content ranging
- *       from 10° to 15°E and 40° to 45°N should override this method as
+ *       from 10 to 15E and 40 to 45N should override this method as
  *       follows:
  *
  *       <pre>
@@ -1829,7 +1829,7 @@ public abstract class WCTZoomPane extends JComponent implements DeformableViewer
      * containing navigation options.
      *
      * @param  event Mouse event containing amongst others, the 
-     *         coordinates pointées???????????.
+     *         coordinates pointes???????????.
      * @return The contextual menu, or <code>null</code> to avoid displaying
      *         the menu.
      */
@@ -1864,7 +1864,7 @@ public abstract class WCTZoomPane extends JComponent implements DeformableViewer
      * a contextual menu which contains magnifying glass options.
      *
      * @param  event Mouse event containing amongst others, the 
-     *         coordinates ???? pointées.
+     *         coordinates ???? pointes.
      * @return The contextual menu, or <code>null</code> to avoid displaying
      *         the menu.
      */

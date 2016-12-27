@@ -196,25 +196,25 @@ public class RenderedGridCoverage extends RenderedLayer implements TileObserver 
     private Dimension2D preferredPixelSize;
 
     /**
-     * Point dans lequel mémoriser les coordonnées logiques d'un pixel
-     * de l'image. Cet objet est utilisé temporairement pour obtenir la
-     * valeur du paramètre géophysique d'un pixel.
+     * Point dans lequel mmoriser les coordonnes logiques d'un pixel
+     * de l'image. Cet objet est utilis temporairement pour obtenir la
+     * valeur du paramtre gophysique d'un pixel.
      *
      * @see #formatValue
      */
     private transient Point2D point;
 
     /**
-     * Valeurs sous le curseur de la souris. Ce tableau sera créé
-     * une fois pour toute la première fois où il sera nécessaire.
+     * Valeurs sous le curseur de la souris. Ce tableau sera cr
+     * une fois pour toute la premire fois o il sera ncessaire.
      *
      * @see #formatValue
      */
     private transient double[] values;
 
     /**
-     * Liste des bandes. Cette liste ne sera créée
-     * que la première fois où elle sera nécessaire.
+     * Liste des bandes. Cette liste ne sera cre
+     * que la premire fois o elle sera ncessaire.
      *
      * @see #formatValue
      */
@@ -820,7 +820,7 @@ public class RenderedGridCoverage extends RenderedLayer implements TileObserver 
      * <code>toAppendTo</code> the value in each bands for the pixel at the
      * mouse position. For example if the current image show Sea Surface
      * Temperature (SST), then this method will format the temperature in
-     * geophysical units (e.g. "12°C").
+     * geophysical units (e.g. "12C").
      *
      * @param  event The mouse event.
      * @param  toAppendTo The destination buffer for formatting a value.
@@ -873,8 +873,8 @@ public class RenderedGridCoverage extends RenderedLayer implements TileObserver 
     }
 
     /**
-     * Efface les informations qui avaient été
-     * sauvegardées dans la cache interne.
+     * Efface les informations qui avaient t
+     * sauvegardes dans la cache interne.
      */
     void clearCache() {
         point  = null;

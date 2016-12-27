@@ -286,7 +286,7 @@ public class FileScanner {
                nwsheader = new DecodeL3Header();
             }
             nwsheader.decodeHeader(url);
-//            String elevAngle = fmt2.format((double) ((DecodeL3Header)nwsheader).getProductSpecificValue(2) / 10.0) + "° ";
+//            String elevAngle = fmt2.format((double) ((DecodeL3Header)nwsheader).getProductSpecificValue(2) / 10.0) + " ";
             String elevAngle = fmt2.format((double) ((DecodeL3Header)nwsheader).getProductSpecificValue(2) / 10.0) + " deg ";
             if (elevAngle.startsWith("0.00")) {
                 elevAngle = "";

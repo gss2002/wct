@@ -888,7 +888,7 @@ public class GridCoverage extends Coverage {
      * string with pixel coordinates and pixel values for all bands (with geophysics
      * values or category name in parenthesis). Example for a 1-banded image:
      *
-     * <blockquote><pre>(1171,1566)=[196 (29.6 °C)]</pre></blockquote>
+     * <blockquote><pre>(1171,1566)=[196 (29.6 C)]</pre></blockquote>
      *
      * @param  coord The coordinate point where to evaluate.
      * @return A string with pixel coordinates and pixel values at the specified location,
@@ -1344,7 +1344,7 @@ testLinear: for (int i=0; i<numBands; i++) {
     }
 
     /**
-     * Returns a string représentation of this coverage. This string is
+     * Returns a string reprsentation of this coverage. This string is
      * for debugging purpose only and may change in future version.
      */
     public String toString() {

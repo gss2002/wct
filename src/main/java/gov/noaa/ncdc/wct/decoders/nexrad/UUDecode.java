@@ -6,11 +6,11 @@ package gov.noaa.ncdc.wct.decoders.nexrad;
 // You may use and distribute this example. This program is 
 // provided WITHOUT WARRANTY either expressed or implied.
 //
-// Copyright Henrik Björkman 1998
+// Copyright Henrik Bjrkman 1998
 //
 //
 // History:
-// 0.0 Created by Henrik Björkman 1998-07-16 (from MakeHtmlLinks.java)
+// 0.0 Created by Henrik Bjrkman 1998-07-16 (from MakeHtmlLinks.java)
 // 0.1 Single class version. Henrik 1998-07-19
 // 0.2 fixed a bug that caused StringIndexOutOfBoundsException Henrik 21/11.
 

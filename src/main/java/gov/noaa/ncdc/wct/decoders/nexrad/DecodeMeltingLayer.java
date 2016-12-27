@@ -174,7 +174,7 @@ public class DecodeMeltingLayer implements DecodeL3Alpha {
 //            metaLabelString[0] = "COLOR: " + id;
 //            metaLabelString[1] = "CONTOUR: " + prob + (prob.equals("N/A") ? "" : "%");
             
-            metaLabelString[0] = "ELEV ANGLE: " + WCTUtils.DECFMT_0D00.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+            metaLabelString[0] = "ELEV ANGLE: " + WCTUtils.DECFMT_0D00.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
             
         }
         else {

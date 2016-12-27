@@ -122,7 +122,7 @@ public class Renderer implements Renderer2D {
     ////////                                                  ////////
     //////////////////////////////////////////////////////////////////
     /**
-     * Objet utilisé pour comparer deux objets {@link RenderedLayer}.
+     * Objet utilis pour comparer deux objets {@link RenderedLayer}.
      * Ce comparateur permettra de classer les {@link RenderedLayer}
      * par ordre croissant d'ordre <var>z</var>.
      */
@@ -360,9 +360,9 @@ public class Renderer implements Renderer2D {
     private final ListenerProxy listenerProxy = new ListenerProxy();
 
     /**
-     * Classe ayant la charge de réagir aux différents événements qui intéressent cet
-     * objet <code>Renderer</code>. Cette classe réagira entre autres aux changements
-     * de l'ordre <var>z</var> ainsi qu'aux changements des coordonnées géographiques
+     * Classe ayant la charge de ragir aux diffrents vnements qui intressent cet
+     * objet <code>Renderer</code>. Cette classe ragira entre autres aux changements
+     * de l'ordre <var>z</var> ainsi qu'aux changements des coordonnes gographiques
      * d'une couche.
      */
     private final class ListenerProxy extends ComponentAdapter implements PropertyChangeListener {
@@ -592,7 +592,7 @@ public class Renderer implements Renderer2D {
                  * of 1849.10 metres. The average of semi-major and semi-minor axis results in a
                  * nautical mile of 1852.21 metres, which is pretty close to the internationaly
                  * agreed length (1852 metres). This is consistent with the definition of nautical
-                 * mile, which is the length of an angle of 1 minute along the meridian at 45° of
+                 * mile, which is the length of an angle of 1 minute along the meridian at 45 of
                  * latitude.
                  */
                 m = Unit.RADIAN.convert(m, unit) * 0.5*(ellipsoid.getSemiMajorAxis() +
@@ -691,11 +691,11 @@ public class Renderer implements Renderer2D {
     }
 
     /**
-     * Remplace un rectangle par un autre dans le calcul de {@link #preferredArea}. Si ça a eu
-     * pour effet de changer les coordonnées géographiques couvertes, un événement approprié
-     * sera lancé. Cette méthode est plus économique que {@link #computePreferredArea} du fait
-     * qu'elle essaie de ne pas tout recalculer. Si on n'a pas pu faire l'économie d'un recalcul
-     * toutefois, alors {@link #computePreferredArea} sera appelée.
+     * Remplace un rectangle par un autre dans le calcul de {@link #preferredArea}. Si a a eu
+     * pour effet de changer les coordonnes gographiques couvertes, un vnement appropri
+     * sera lanc. Cette mthode est plus conomique que {@link #computePreferredArea} du fait
+     * qu'elle essaie de ne pas tout recalculer. Si on n'a pas pu faire l'conomie d'un recalcul
+     * toutefois, alors {@link #computePreferredArea} sera appele.
      *
      * @param  oldSubArea       The old preferred area of the layer that changed.
      * @param  newSubArea       The new preferred area of the layer that changed.
@@ -729,32 +729,32 @@ public class Renderer implements Renderer2D {
     }
 
     /**
-     * Agrandi (si nécessaire) une région géographique en fonction de l'ajout, la supression ou
-     * la modification des coordonnées d'une sous-région. Cette méthode est appelée lorsque les
-     * coordonnées de la sous-région <code>oldSubArea</code> ont changées pour devenir
+     * Agrandi (si ncessaire) une rgion gographique en fonction de l'ajout, la supression ou
+     * la modification des coordonnes d'une sous-rgion. Cette mthode est appele lorsque les
+     * coordonnes de la sous-rgion <code>oldSubArea</code> ont changes pour devenir
      * <code>newSubArea</code>. Si ce changement s'est traduit par un agrandissement de
-     * <code>area</code>, alors le nouveau rectangle agrandi sera retourné. Si le changement
-     * n'a aucun impact sur <code>area</code>, alors <code>area</code> sera retourné tel quel.
-     * Si le changement PEUT avoir diminué la dimension de <code>area</code>, alors cette méthode
-     * retourne <code>null</code> pour indiquer qu'il faut recalculer <code>area</code> à partir
-     * de zéro.
+     * <code>area</code>, alors le nouveau rectangle agrandi sera retourn. Si le changement
+     * n'a aucun impact sur <code>area</code>, alors <code>area</code> sera retourn tel quel.
+     * Si le changement PEUT avoir diminu la dimension de <code>area</code>, alors cette mthode
+     * retourne <code>null</code> pour indiquer qu'il faut recalculer <code>area</code>  partir
+     * de zro.
      *
-     * @param  area       Région géographique qui pourrait être affectée par le changement de
-     *                    coordonnées d'une sous-région. En aucun cas ce rectangle <code>area</code>
-     *                    ne sera directement modifié. Si une modification est nécessaire, elle sera
-     *                    faite sur un clone qui sera retourné. Cet argument peut être
-     *                    <code>null</code> si aucune région n'était précédemment définie.
-     * @param  oldSubArea Anciennes coordonnées de la sous-région, ou <code>null</code> si la
-     *                    sous-région n'existait pas avant l'appel de cette méthode. Ce rectangle
-     *                    ne sera jamais modifié ni retourné.
-     * @param  newSubArea Nouvelles coordonnées de la sous-région, ou <code>null</code> si la
-     *                    sous-région est supprimée. Ce rectangle ne sera jamais modifié ni
-     *                    retourné.
+     * @param  area       Rgion gographique qui pourrait tre affecte par le changement de
+     *                    coordonnes d'une sous-rgion. En aucun cas ce rectangle <code>area</code>
+     *                    ne sera directement modifi. Si une modification est ncessaire, elle sera
+     *                    faite sur un clone qui sera retourn. Cet argument peut tre
+     *                    <code>null</code> si aucune rgion n'tait prcdemment dfinie.
+     * @param  oldSubArea Anciennes coordonnes de la sous-rgion, ou <code>null</code> si la
+     *                    sous-rgion n'existait pas avant l'appel de cette mthode. Ce rectangle
+     *                    ne sera jamais modifi ni retourn.
+     * @param  newSubArea Nouvelles coordonnes de la sous-rgion, ou <code>null</code> si la
+     *                    sous-rgion est supprime. Ce rectangle ne sera jamais modifi ni
+     *                    retourn.
      *
-     * @return Un rectangle contenant les coordonnées mises-à-jour de <code>area</code>, si cette
-     *         mise-à-jour a pu se faire. Si elle n'a pas pu être faite faute d'informations, alors
-     *         cette méthode retourne <code>null</code>. Dans ce dernier cas, il faudra recalculer
-     *         <code>area</code> à partir de zéro.
+     * @return Un rectangle contenant les coordonnes mises--jour de <code>area</code>, si cette
+     *         mise--jour a pu se faire. Si elle n'a pas pu tre faite faute d'informations, alors
+     *         cette mthode retourne <code>null</code>. Dans ce dernier cas, il faudra recalculer
+     *         <code>area</code>  partir de zro.
      */
     private static Rectangle2D changeArea(Rectangle2D area,
                                           final Rectangle2D oldSubArea,
@@ -762,10 +762,10 @@ public class Renderer implements Renderer2D {
     {
         if (area == null) {
             /*
-             * Si aucune région n'avait été définie auparavant. La sous-région
-             * "newSubArea" représente donc la totalité de la nouvelle région
-             * "area". On construit un nouveau rectangle plutôt que de faire un
-             * clone pour être certain d'avoir un type d'une précision suffisante.
+             * Si aucune rgion n'avait t dfinie auparavant. La sous-rgion
+             * "newSubArea" reprsente donc la totalit de la nouvelle rgion
+             * "area". On construit un nouveau rectangle plutt que de faire un
+             * clone pour tre certain d'avoir un type d'une prcision suffisante.
              */
             if (newSubArea != null) {
                 area = new Rectangle2D.Double();
@@ -775,11 +775,11 @@ public class Renderer implements Renderer2D {
         }
         if (newSubArea == null) {
             /*
-             * Une sous-région a été supprimée ("newSubArea" est nulle). Si la sous-région supprimée ne
-             * touchait pas au bord de "area",  alors sa suppression ne peut pas avoir diminuée "area":
+             * Une sous-rgion a t supprime ("newSubArea" est nulle). Si la sous-rgion supprime ne
+             * touchait pas au bord de "area",  alors sa suppression ne peut pas avoir diminue "area":
              * on retournera alors area. Si au contraire "oldSubArea" touchait au bord de "area", alors
-             * on ne sait pas si la suppression de "oldSubArea" a diminué "area".  Il faudra recalculer
-             * "area" à partir de zéro, ce que l'on indique en retournant NULL.
+             * on ne sait pas si la suppression de "oldSubArea" a diminu "area".  Il faudra recalculer
+             * "area"  partir de zro, ce que l'on indique en retournant NULL.
              */
             if (               oldSubArea==null  ) return area;
             if (contains(area, oldSubArea, false)) return area;
@@ -787,11 +787,11 @@ public class Renderer implements Renderer2D {
         }
         if (oldSubArea != null) {
             /*
-             * Une sous-région a changée ("oldSubArea" est devenu "newSubArea"). Si on détecte que ce
-             * changement PEUT diminuer la superficie totale de "area", il faudra recalculer "area" à
-             * partir de zéro pour en être sur. On retourne donc NULL.  Si au contraire la superficie
-             * totale de "area" ne peut pas avoir diminuée, elle peut avoir augmentée. Ce calcul sera
-             * fait à la fin de cette méthode, qui poursuit son cours.
+             * Une sous-rgion a change ("oldSubArea" est devenu "newSubArea"). Si on dtecte que ce
+             * changement PEUT diminuer la superficie totale de "area", il faudra recalculer "area" 
+             * partir de zro pour en tre sur. On retourne donc NULL.  Si au contraire la superficie
+             * totale de "area" ne peut pas avoir diminue, elle peut avoir augmente. Ce calcul sera
+             * fait  la fin de cette mthode, qui poursuit son cours.
              */
             double t;
             if (((t=oldSubArea.getMinX()) <= area.getMinX() && t < newSubArea.getMinX()) ||
@@ -799,17 +799,17 @@ public class Renderer implements Renderer2D {
                 ((t=oldSubArea.getMinY()) <= area.getMinY() && t < newSubArea.getMinY()) ||
                 ((t=oldSubArea.getMaxY()) >= area.getMaxY() && t > newSubArea.getMaxY()))
             {
-                return null; // Le changement PEUT avoir diminué "area".
+                return null; // Le changement PEUT avoir diminu "area".
             }
         }
         /*
-         * Une nouvelle sous-région est ajoutée. Si elle était déjà
-         * entièrement comprise dans "area", alors son ajout n'aura
-         * aucun impact sur "area" et peut être ignoré.
+         * Une nouvelle sous-rgion est ajoute. Si elle tait dj
+         * entirement comprise dans "area", alors son ajout n'aura
+         * aucun impact sur "area" et peut tre ignor.
          */
         if (!contains(area, newSubArea, true)) {
-            // Cloner est nécessaire pour que "firePropertyChange"
-            // puisse connaître l'ancienne valeur de "area".
+            // Cloner est ncessaire pour que "firePropertyChange"
+            // puisse connatre l'ancienne valeur de "area".
             area = (Rectangle2D) area.clone();
             area.add(newSubArea);
         }
@@ -817,15 +817,15 @@ public class Renderer implements Renderer2D {
     }
 
     /**
-     * Indique si la région géographique <code>big</code> contient entièrement la sous-région
-     * <code>small</code> spécifiée. Un cas particulier survient si un ou plusieurs bords de
-     * <code>small</code> coïncide avec les bords correspondants de <code>big</code>. L'argument
-     * <code>edge</code> indique si on considère qu'il y a inclusion ou pas dans ces circonstances.
+     * Indique si la rgion gographique <code>big</code> contient entirement la sous-rgion
+     * <code>small</code> spcifie. Un cas particulier survient si un ou plusieurs bords de
+     * <code>small</code> concide avec les bords correspondants de <code>big</code>. L'argument
+     * <code>edge</code> indique si on considre qu'il y a inclusion ou pas dans ces circonstances.
      *
-     * @param big   Région géographique dont on veut vérifier s'il contient une sous-région.
-     * @param small Sous-région géographique dont on veut vérifier l'inclusion dans <code>big</code>.
-     * @param edge <code>true</code> pour considérer qu'il y a inclusion si ou ou plusieurs bords
-     *        de <code>big</code> et <code>small</code> conïncide, ou <code>false</code> pour exiger
+     * @param big   Rgion gographique dont on veut vrifier s'il contient une sous-rgion.
+     * @param small Sous-rgion gographique dont on veut vrifier l'inclusion dans <code>big</code>.
+     * @param edge <code>true</code> pour considrer qu'il y a inclusion si ou ou plusieurs bords
+     *        de <code>big</code> et <code>small</code> conncide, ou <code>false</code> pour exiger
      *        que <code>small</code> ne touche pas aux bords de <code>big</code>.
      */
     static boolean contains(final Rectangle2D big, final Rectangle2D small, final boolean edge) {
@@ -1043,8 +1043,8 @@ public class Renderer implements Renderer2D {
         layer.renderer = null;
         /*
          * Retire cette couche de la liste {@link #layers}. On recherchera
-         * toutes les occurences de cette couche, même si en principe elle ne
-         * devrait apparaître qu'une et une seule fois.
+         * toutes les occurences de cette couche, mme si en principe elle ne
+         * devrait apparatre qu'une et une seule fois.
          */
         for (int i=layerCount; --i>=0;) {
             final RenderedLayer scan = layers[i];
@@ -1121,7 +1121,7 @@ public class Renderer implements Renderer2D {
     }
 
     /**
-     * Procède au classement immédiat des couches, si ce n'était pas déjà fait.
+     * Procde au classement immdiat des couches, si ce n'tait pas dj fait.
      */
     private void sortLayers() {
         assert Thread.holdsLock(this);
@@ -1998,11 +1998,11 @@ renderOffscreen:while (true) {
     }
 
     /**
-     * Méthode appelée lorsqu'une exception {@link TransformException} non-gérée
-     * s'est produite. Cette méthode peut être appelée pendant le traçage de la carte
-     * où les mouvements de la souris. Elle ne devrait donc pas utiliser une boîte de
-     * dialogue pour reporter l'erreur, et retourner rapidement pour éviter de bloquer
-     * la queue des événements de <i>Swing</i>.
+     * Mthode appele lorsqu'une exception {@link TransformException} non-gre
+     * s'est produite. Cette mthode peut tre appele pendant le traage de la carte
+     * o les mouvements de la souris. Elle ne devrait donc pas utiliser une bote de
+     * dialogue pour reporter l'erreur, et retourner rapidement pour viter de bloquer
+     * la queue des vnements de <i>Swing</i>.
      *
      * @param  sourceClassName  The caller's class name, for logging purpose.
      * @param  sourceMethodName The caller's method name, for logging purpose.

@@ -382,7 +382,7 @@ public class NexradLegendLabelFactory {
             if (pcode == NexradHeader.L3PC_TDWR_BASE_REFLECTIVITY) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE REFLECTIVITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " DBZ";
                     specialMetadata[2] = "RANGE: 48 NM";
                 }
@@ -393,7 +393,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == NexradHeader.L3PC_TDWR_BASE_REFLECTIVITY_8BIT) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE REFLECTIVITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " DBZ";
                     specialMetadata[2] = "RANGE: 48 NM";
                 }
@@ -404,7 +404,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == NexradHeader.L3PC_TDWR_LONG_RANGE_BASE_REFLECTIVITY_8BIT) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE REFLECTIVITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " DBZ";
                     specialMetadata[2] = "RANGE: 225 NM";
                 }
@@ -415,7 +415,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == NexradHeader.L3PC_TDWR_BASE_VELOCITY_8BIT) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE VELOCITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
 //                    specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " DBZ";
                     specialMetadata[2] = "RANGE: 48 NM";
                 }
@@ -426,7 +426,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == NexradHeader.L3PC_LONG_RANGE_BASE_REFLECTIVITY_8BIT) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE REFLECTIVITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " DBZ";
                     specialMetadata[2] = "RANGE: 248 NM";
                 }
@@ -437,7 +437,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == NexradHeader.L3PC_LONG_RANGE_BASE_VELOCITY_8BIT) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE VELOCITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
 //                    specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " DBZ";
                     specialMetadata[2] = "RANGE: 248 NM";
                 }
@@ -509,7 +509,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == 19 || pcode == 20) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE REFLECTIVITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " dBZ";
                     if (pcode == 20) {
                         specialMetadata[2] = "RANGE 248 NM";
@@ -527,7 +527,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == 25) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE VELOCITY 32 NM";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX NEG: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " KT";
                     specialMetadata[2] = "MAX POS: " + ((DecodeL3Header)header).getProductSpecificValue(4) + " KT";
                 }
@@ -539,7 +539,7 @@ public class NexradLegendLabelFactory {
             else if (pcode == 27) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "BASE VELOCITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX NEG: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " KT";
                     specialMetadata[2] = "MAX POS: " + ((DecodeL3Header)header).getProductSpecificValue(4) + " KT";
                 }
@@ -552,7 +552,7 @@ public class NexradLegendLabelFactory {
 
                 if (!isAlphaBackground) {
                     dataDescription[0] = "SPECTRUM WIDTH";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " KT";
                     specialMetadata[2] = "RANGE 32 NM";
                 }
@@ -565,7 +565,7 @@ public class NexradLegendLabelFactory {
 
                 if (!isAlphaBackground) {
                     dataDescription[0] = "SPECTRUM WIDTH";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " KT";
                     specialMetadata[2] = "RANGE 124 NM";
                 }
@@ -748,7 +748,7 @@ public class NexradLegendLabelFactory {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "VAD WIND PROFILE";
                     specialMetadata[0] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " KT"
-                            + " , " + ((DecodeL3Header)header).getProductSpecificValue(4) + " °";
+                            + " , " + ((DecodeL3Header)header).getProductSpecificValue(4) + " ";
                     specialMetadata[1] = "ALT: " + ((DecodeL3Header)header).getProductSpecificValue(5) * 10 + " FT";
                     specialMetadata[2] = " ";
                 }
@@ -757,11 +757,11 @@ public class NexradLegendLabelFactory {
             else if (pcode == 56) {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "STORM REL. VELOCITY";
-                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    specialMetadata[0] = "ELEV ANGLE: " + fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MAX: " + ((DecodeL3Header)header).getProductSpecificValue(3) + " KT , " +
                             ((DecodeL3Header)header).getProductSpecificValue(4) + " KT";
                     specialMetadata[2] = "AVG: " + fmt1.format(((DecodeL3Header)header).getProductSpecificValue(7) / 10.0) + " KT , " +
-                            fmt1.format(((DecodeL3Header)header).getProductSpecificValue(8) / 10.0) + " °";
+                            fmt1.format(((DecodeL3Header)header).getProductSpecificValue(8) / 10.0) + " ";
                 }
                 else {
                     specialMetadata[1] = "STORM REL. VELOCITY";
@@ -912,7 +912,7 @@ public class NexradLegendLabelFactory {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "DIFFERENTIAL REFLECTIVITY";
                     specialMetadata[0] = "ELEV ANGLE: " + 
-                    	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MIN/MAX: " + 
                     	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(3) / 10.0) + " , " +
                     	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(4) / 10.0) + " dB";
@@ -926,7 +926,7 @@ public class NexradLegendLabelFactory {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "CORRELATION COEFFICIENT";
                     specialMetadata[0] = "ELEV ANGLE: " + 
-                    	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                    	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MIN/MAX: " + 
                     	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(3) * 0.00333) + " , " +
                     	fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(4) * 0.00333) + " ";
@@ -940,7 +940,7 @@ public class NexradLegendLabelFactory {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "SPECIFIC DIFF. PHASE";
                     specialMetadata[0] = "ELEV ANGLE: " + 
-                		fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                		fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = "MIN/MAX: " + 
                 		fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(3) * 0.05) + " , " +
                 		fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(4) * 0.05) + " DEG/KM";
@@ -984,7 +984,7 @@ public class NexradLegendLabelFactory {
                 if (!isAlphaBackground) {
                     dataDescription[0] = "HYDROMETEOR CLASS.";
                     specialMetadata[0] = "ELEV ANGLE: " + 
-                		fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " °";
+                		fmt2.format((double) ((DecodeL3Header)header).getProductSpecificValue(2) / 10.0) + " ";
                     specialMetadata[1] = " ";
                     specialMetadata[2] = " ";
                 }

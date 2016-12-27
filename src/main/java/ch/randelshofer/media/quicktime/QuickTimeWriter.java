@@ -620,7 +620,7 @@ public class QuickTimeWriter {
 
             d.writeShort(0); // language;
             // A 16-bit integer that specifies the language code for this media.
-            // See “Language Code Values�? for valid language codes:
+            // See “Language Code Values? for valid language codes:
             // http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap4/chapter_5_section_2.html#//apple_ref/doc/uid/TP40000939-CH206-27005
 
             d.writeShort(0); // quality
@@ -946,7 +946,7 @@ public class QuickTimeWriter {
 
                     // The identification number associated with the sample description for
                     // the sample. For details on sample description atoms, see “Sample
-                    // Description Atoms.�?:
+                    // Description Atoms.?:
                     // http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap2/chapter_3_section_5.html#//apple_ref/doc/uid/TP40000939-CH204-25691
                 }
                 firstChunk++;
@@ -1224,7 +1224,7 @@ public class QuickTimeWriter {
             // A 16-bit integer that specifies the transfer mode. The transfer mode
             // specifies which Boolean operation QuickDraw should perform when
             // drawing or transferring an image from one location to another.
-            // See “Graphics Modes�? for a list of graphics modes supported by
+            // See “Graphics Modes? for a list of graphics modes supported by
             // QuickTime:
             // http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap4/chapter_5_section_5.html#//apple_ref/doc/uid/TP40000939-CH206-18741
 
@@ -1246,7 +1246,7 @@ public class QuickTimeWriter {
             // description varies, depending on the media type. For example, in the
             // case of video media, the sample descriptions are image description
             // structures. The sample description information for each media type is
-            // explained in “Media Data Atom Types�?:
+            // explained in “Media Data Atom Types?:
             // http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap3/chapter_4_section_1.html#//apple_ref/doc/uid/TP40000939-CH205-SW1
             leaf = new CompositeAtom("stsd");
             stblAtom.add(leaf);
@@ -1522,7 +1522,7 @@ public class QuickTimeWriter {
             // description varies, depending on the media type. For example, in the
             // case of video media, the sample descriptions are image description
             // structures. The sample description information for each media type is
-            // explained in “Media Data Atom Types�?:
+            // explained in “Media Data Atom Types?:
             // http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap3/chapter_4_section_1.html#//apple_ref/doc/uid/TP40000939-CH205-SW1
             leaf = new DataAtom("stsd");
             stblAtom.add(leaf);
@@ -1616,7 +1616,7 @@ public class QuickTimeWriter {
             // XXX - This must be set to -1, or the QuickTime player won't accept this file.
             // A 16-bit integer that must be set to 0 for version 0 sound
             // descriptions. This may be set to –2 for some version 1 sound
-            // descriptions; see “Redefined Sample Tables�? (page 135).
+            // descriptions; see “Redefined Sample Tables? (page 135).
 
             d.writeUShort(0); // packetSize
             // A 16-bit integer that must be set to 0.
@@ -3229,7 +3229,7 @@ public class QuickTimeWriter {
         d.writeFixed16D16(0); // matrix[7]
         d.writeFixed2D30(1f); // matrix[8]
         // The matrix structure associated with this movie. A matrix shows how
-        // to map points from one coordinate space into another. See “Matrices�?
+        // to map points from one coordinate space into another. See “Matrices?
         // for a discussion of how display matrices are used in QuickTime:
         // http://developer.apple.com/documentation/QuickTime/QTFF/QTFFChap4/chapter_5_section_4.html#//apple_ref/doc/uid/TP40000939-CH206-18737
 

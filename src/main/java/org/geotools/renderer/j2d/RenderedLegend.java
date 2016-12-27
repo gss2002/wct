@@ -1,8 +1,8 @@
 /*
  * Geotools 2 - OpenSource mapping toolkit
  * (C) 2003, Geotools Project Managment Committee (PMC)
- * (C) 2003, Institut de Recherche pour le Développement
- * (C) 1998, Pêches et Océans Canada
+ * (C) 2003, Institut de Recherche pour le Dveloppement
+ * (C) 1998, Pches et Ocans Canada
  *
  *    This library is free software; you can redistribute it and/or
  *    modify it under the terms of the GNU Lesser General Public
@@ -23,8 +23,8 @@
  *     UNITED KINGDOM: James Macgill
  *             mailto:j.macgill@geog.leeds.ac.uk
  *
- *     FRANCE: Surveillance de l'Environnement Assistée par Satellite
- *             Institut de Recherche pour le Développement / US-Espace
+ *     FRANCE: Surveillance de l'Environnement Assiste par Satellite
+ *             Institut de Recherche pour le Dveloppement / US-Espace
  *             mailto:seasnet@teledetection.fr
  *
  *     CANADA: Observatoire du Saint-Laurent
@@ -66,27 +66,27 @@ public class RenderedLegend extends RenderedLayer {
     private String text;
 
     /**
-     * Position où placer la légende.
+     * Position o placer la lgende.
      */
     private LegendPosition position = LegendPosition.NORTH_WEST;
 
     /**
-     * Espace à laisser entre le haut de la fenêtre et le haut de la légende.
+     * Espace  laisser entre le haut de la fentre et le haut de la lgende.
      */
     private short top = 15;
 
     /**
-     * Espace à laisser entre le bord gauche de la la fenêtre et le bord gauche de la légende.
+     * Espace  laisser entre le bord gauche de la la fentre et le bord gauche de la lgende.
      */
     private short left = 15;
 
     /**
-     * Espace à laisser entre le bas de la fenêtre et le bas de la légende.
+     * Espace  laisser entre le bas de la fentre et le bas de la lgende.
      */
     private short bottom = 15;
 
     /**
-     * Espace à laisser entre le bord droit de la la fenêtre et le bord droit de la légende.
+     * Espace  laisser entre le bord droit de la la fentre et le bord droit de la lgende.
      */
     private short right = 15;
 

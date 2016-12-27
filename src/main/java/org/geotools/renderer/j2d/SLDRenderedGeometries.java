@@ -94,7 +94,7 @@ public class SLDRenderedGeometries extends RenderedGeometries {
         /*
          * Set a default "pixel" size in order to avoid automatic (and costly) resolution
          * computation. We assume that the geometry shape is close to an ellipse, i.e. we
-         * estimate the perimeter using PI*sqrt(2*(a² + b²)) where a and b are semi-axis.
+         * estimate the perimeter using PI*sqrt(2*(a + b)) where a and b are semi-axis.
          */
         Rectangle2D bounds = geometry.getBounds2D();
         double size = (THICKNESS * 2.2214414690791831235079404950303) * XMath
