@@ -280,7 +280,6 @@ public class WCTExportBatch {
      */
     public static void doBatchExport(WCTExport exporter, File infile, File outfile) {
         //List<Attribute> attrs=  exporter.getDecodeRadialDatasetSweepHeader().getRadialDatasetSweep().getGlobalAttributes();
-    	Thread.dumpStack();
     	Double minLat = null;
         Double minLon = null;
         Double maxLat = null;
@@ -330,11 +329,14 @@ public class WCTExportBatch {
 
 		logger.info("Lat/Long: "+minLon +" "+maxLon+" "+minLat+" "+maxLat);
 		WCTFilter nxflter = exporter.getExportL2Filter();
-		nxflter.setExtentFilter(new java.awt.geom.Rectangle2D.Double(minLon, minLat, maxLon - minLon, maxLat - minLat));
+		logger.info("maxDistance:" +nxflter.getMaxDistance());
+		nxflter.setMaxDistance(230.0);
+		logger.info("maxDistance:" +nxflter.getMaxDistance());
+		//nxflter.setExtentFilter(new java.awt.geom.Rectangle2D.Double(minLon, minLat, maxLon - minLon, maxLat - minLat));
         exporter.setExportRadialFilter(nxflter);   
 
         logger.info(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-        logger.info(" NEXRAD EXPORT:");
+        logger.info(" NEXRAD EXPORT1:");
         logger.info("   CUT: " + exporter.getExportCut());
         logger.info("   MOMENT: " + exporter.getExportMoment());
         logger.info("   CLASSIFY: " + exporter.getExportClassify());
@@ -398,7 +400,6 @@ public class WCTExportBatch {
                             logger.severe("GENERAL BATCH PROCESSING ERROR: " + e);
                             logger.fine(Debug.getStackTraceString(e));
                         }
-                    	Thread.dumpStack();
 
                     }
                     else {
@@ -436,7 +437,7 @@ public class WCTExportBatch {
         else {
 
             try {
-
+            	logger.info("GS RADAR EXPORT");
                 if (outfile.isDirectory()) {
                     System.out.println("PROCESSING: "+infile+" -> "+
                     		new File(outfile.toString() + File.separator + infile.getName())+
@@ -466,6 +467,14 @@ public class WCTExportBatch {
             }
 
         }
+        try {
+			logger.info("WCT RADAR FILE: "+rds.getLocation());
+			rds.close();
+			rds.release();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     
@@ -678,7 +687,7 @@ public class WCTExportBatch {
 
         
         logger.info(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
-        logger.info(" NEXRAD EXPORT:");
+        logger.info(" NEXRAD EXPORT2:");
         logger.info("   CUT: " + exporter.getExportCut());
         logger.info("   MOMENT: " + exporter.getExportMoment());
         logger.info("   CLASSIFY: " + exporter.getExportClassify());
@@ -753,7 +762,6 @@ public class WCTExportBatch {
      */
     public static void processConfigFile(WCTExport exporter, File configFile, HashMap<String, String> replacementMap) 
     throws java.net.MalformedURLException, XPathExpressionException {
-    	Thread.dumpStack();
         processConfigFile(exporter, configFile.toURI().toURL(), replacementMap);
     }
 

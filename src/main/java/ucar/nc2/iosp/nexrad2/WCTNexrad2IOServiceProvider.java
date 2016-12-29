@@ -63,16 +63,12 @@ public class WCTNexrad2IOServiceProvider extends AbstractIOServiceProvider {
 
 	@Override
 	public void open(RandomAccessFile raf, NetcdfFile ncfile, CancelTask cancelTask) throws IOException {
-		
-		
-//		System.out.println("Level-2 file opening... "+raf.getFD().hashCode());
-//		System.out.println(RandomAccessFile.getOpenFiles());
-		
+		logger.info("RAF FILELOCATION: "+raf.getLocation());
+		logger.info("NCFILE: "+ncfile.getLocation());
+
 		
 		iosp.open(raf, ncfile, cancelTask);
 		
-//		System.out.println(RandomAccessFile.getOpenFiles());
-
 		String[] varNameList = new String[] {
 				"Reflectivity_HI", "Reflectivity", 
 				"RadialVelocity_HI", "RadialVelocity", 
@@ -133,11 +129,10 @@ public class WCTNexrad2IOServiceProvider extends AbstractIOServiceProvider {
 	@Override
 	public void close() throws IOException {
 		
-//		System.out.println("Level-2 file closing... ");
-		
-		
+		logger.info("Level-2 file closing... ");
+		logger.info("detailedinfo: "+iosp.getDetailInfo());
 		iosp.close();
-//		System.out.println(RandomAccessFile.getOpenFiles());
+		logger.info("RandomAccess Openfiles: "+RandomAccessFile.getOpenFiles());
 	}
 
 

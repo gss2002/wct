@@ -117,6 +117,7 @@ import ucar.nc2.ft.FeatureDataset;
 import ucar.nc2.ft.FeatureDatasetFactoryManager;
 import ucar.nc2.time.CalendarDate;
 import ucar.nc2.time.CalendarDateRange;
+import ucar.nc2.util.cache.FileCacheIF;
 import ucar.unidata.geoloc.LatLonPointImpl;
 import ucar.unidata.geoloc.LatLonRect;
 
@@ -547,6 +548,9 @@ implements DataDecodeListener, GeneralProgressListener {
 
             		Formatter fmter = new Formatter();
     				FeatureDataset fd = FeatureDatasetFactoryManager.open(null, dataURL.toString(), WCTUtils.getSharedCancelTask(), fmter);
+    				logger.info("FD IOSP: "+fd.getNetcdfFile().getIosp());
+    				logger.info("FD FileTypeID: "+fd.getNetcdfFile().getFileTypeId());
+    				logger.info("FD ID: "+fd.getNetcdfFile().getId());
     				if (fd != null && fd.getFeatureType().isPointFeatureType()) {
     					currentDataType = SupportedDataType.POINT_TIMESERIES;		
     				}
@@ -1069,9 +1073,13 @@ implements DataDecodeListener, GeneralProgressListener {
                     String variableName = radialExportVariable == null ? radialDataset.getDataVariables().get(0).toString() : radialExportVariable;
                     if (exportRadialFilter.getExtentFilter() == null) {
                         bounds = header.getNexradBounds();
+                       
+                        logger.info("nexradBounds: "+bounds);
                     }
                     else {
                         bounds = exportRadialFilter.getExtentFilter();
+                        logger.info("ExtentFilter: "+bounds);
+
                     }
 
                     if (exportGridCellSize > 0.0) {
@@ -1092,13 +1100,26 @@ implements DataDecodeListener, GeneralProgressListener {
                     radialDatasetRaster.setWidth(exportGridSize);
                     
                     radialDatasetRaster.setVariableName(variableName);
+                    logger.info("variableName:" +variableName);
+
                     radialDatasetRaster.setSweepIndex(radialExportCut);
+                    logger.info("sweepIndex:" +radialExportCut);
+
+                    logger.info("radialExportCut:" +radialExportCut);
                     radialDatasetRaster.setWctFilter(wctFilter);
+                    logger.info("wctFilterDist:" +wctFilter.getMaxDistance());
+                    logger.info("wctFilterAz:" +wctFilter.getMaxAzimuth());
+                    logger.info("wctFilterMinDist:" +wctFilter.getMinDistance());
+
+                    logger.info("scannedFileUrl: "+scannedFile.getURL());
                     dataURL = WCTDataUtils.scan(dataURL, scannedFile, useWctCache, true, SupportedDataType.RADIAL);
                     if (Double.isNaN(radialExportCappiHeightInMeters)) {
+                    	logger.info("CappiInHeight");
+                    	
                     	radialDatasetRaster.process(dataURL.toString(), bounds);
                     }
                     else {
+                    	logger.info("NotCappiInHeight");
                     	radialDatasetRaster.processCAPPI(dataURL.toString(), bounds, 
                     			new double[] { radialExportCappiHeightInMeters }, radialExportCappiInterpolationType);
                     }
@@ -1142,7 +1163,9 @@ implements DataDecodeListener, GeneralProgressListener {
                         rasterExport.saveBinaryGrid(file, genericRaster);
                     }
                     else if (outputFormat == ExportFormat.GRIDDED_NETCDF) {
+                    
                         rasterExport.saveNetCDF(file, genericRaster);
+              
                     }
                     else if (outputFormat == ExportFormat.WCT_RASTER_OBJECT_ONLY) {
                         ; // do nothing, the object is ready
@@ -1172,8 +1195,10 @@ implements DataDecodeListener, GeneralProgressListener {
                         event.setProgress(100);
                         listeners.get(i).exportEnded(event);
                     }
-
+                    logger.info("RadialDataSet: "+radialDataset.getLocationURI());
                     radialDataset.close();
+                    radialDataset.release();
+                    radialDataset.clearDatasetMemory();
                     return;
 
                 }
