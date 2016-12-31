@@ -805,7 +805,7 @@ public class WCTRasterExport {
         logger.fine("MAX VAL: "+maxVal);
         logger.fine("MIN VAL: "+minVal);
         logger.fine("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-
+        wctRaster.getVariableName();
         ncfile.write(wctRaster.getVariableName(), valueArray);
 
         /* Store the rest of variable values */
@@ -832,9 +832,29 @@ public class WCTRasterExport {
             timeArray.setLong(timeIndex.set(0), (long)(wctRaster.getDateInMilliseconds()/1000.0));
             ncfile.write("time", timeArray);
         }
+      	if (!(ncfile.isDefineMode())) {
 
+        	if (ncfile.findVariable("CorrelationCoefficient") != null) {
+        		ncfile.setRedefineMode(true);
+        		ncfile.renameVariable("CorrelationCoefficient", "CC");
+        		ncfile.setRedefineMode(false);
 
+        	}
+        	if (ncfile.findVariable("DifferentialPhase") != null) {
+        		ncfile.setRedefineMode(true);
+        		ncfile.renameVariable("DifferentialPhase", "KDP");
+        		ncfile.setRedefineMode(false);
+
+        	}
+        	if (ncfile.findVariable("DifferentialReflectivity") != null) {
+        		ncfile.setRedefineMode(true);
+        		ncfile.renameVariable("DifferentialReflectivity", "ZDR");
+        		ncfile.setRedefineMode(false);
+        	}
+    	}
+      	
         ncfile.close();
+ 
 
         // End
         // --------------
