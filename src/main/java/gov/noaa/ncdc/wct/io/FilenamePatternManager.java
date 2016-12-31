@@ -1,11 +1,13 @@
 package gov.noaa.ncdc.wct.io;
 
 import gov.noaa.ncdc.wct.WCTUtils;
+import gov.noaa.ncdc.wct.decoders.nexrad.DecodeL3AlphaGeneric;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,7 +22,9 @@ import org.xml.sax.SAXException;
 public class FilenamePatternManager {
 
 	private ArrayList<FilenamePattern> patternList = new ArrayList<FilenamePattern>();
-
+    private static final Logger logger = Logger.getLogger(FilenamePatternManager.class.getName());
+ 
+	
 	public void addPatterns(URL url) throws SAXException, IOException, ParserConfigurationException, NumberFormatException, XPathExpressionException {
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         domFactory.setNamespaceAware(true); // never forget this!
@@ -28,7 +32,7 @@ public class FilenamePatternManager {
         
 //        URL url = this.getClass().getResource("/config/filenamePatterns.xml");	
         
-        System.out.println("loading config from "+url.toString());
+        logger.info("loading config from "+url.toString());
         Document doc = builder.parse(url.toString());
 
         XPathFactory factory = XPathFactory.newInstance();

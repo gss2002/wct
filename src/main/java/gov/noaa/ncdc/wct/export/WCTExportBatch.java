@@ -376,7 +376,7 @@ public class WCTExportBatch {
 
                     	String ext = WCTExportUtils.getExportFileExtension(exporter.getOutputFormat());
                         
-                        System.out.println("PROCESSING: "+files[n]+" -> "+
+                        logger.info("PROCESSING: "+files[n]+" -> "+
                         		new File(outfile.toString() + File.separator + files[n].getName() + ext) +
                                 " , FORMAT '"+exporter.getOutputFormat()+"'");                  
                     	
@@ -405,7 +405,7 @@ public class WCTExportBatch {
                     else {
 
                     	String ext = WCTExportUtils.getExportFileExtension(exporter.getOutputFormat());
-                        System.out.println("PROCESSING: "+files[n]+" -> "+outfile+
+                        logger.info("PROCESSING: "+files[n]+" -> "+outfile+
                                 (outfile.toString().endsWith(ext) ? "" : ext )+
                                 " , FORMAT '"+exporter.getOutputFormat()+"'");                  
 
@@ -439,7 +439,7 @@ public class WCTExportBatch {
             try {
             	logger.info("GS RADAR EXPORT");
                 if (outfile.isDirectory()) {
-                    System.out.println("PROCESSING: "+infile+" -> "+
+                    logger.info("PROCESSING: "+infile+" -> "+
                     		new File(outfile.toString() + File.separator + infile.getName())+
                             " , FORMAT '"+exporter.getOutputFormat()+"'");                  
                     
@@ -447,7 +447,7 @@ public class WCTExportBatch {
                 }
                 else {
                 	String ext = WCTExportUtils.getExportFileExtension(exporter.getOutputFormat());
-                    System.out.println("PROCESSING: "+infile+" -> "+outfile+
+                    logger.info("PROCESSING: "+infile+" -> "+outfile+
                             (outfile.toString().endsWith(ext) ? "" : ext )+
                             " , FORMAT '"+exporter.getOutputFormat()+"'");                  
                 	
@@ -504,7 +504,7 @@ public class WCTExportBatch {
             for (int n = 0; n < files.length; n++) {
                 if (!files[n].isDirectory()) {
                 	
-                    System.out.println("PROCESSING: "+files[n]+" -> "+
+                    logger.info("PROCESSING: "+files[n]+" -> "+
                     		(outfile.isDirectory() ? "metadata.csv" : outfile)+
                             " , FORMAT 'CSV'");                  
 
@@ -553,7 +553,7 @@ public class WCTExportBatch {
         else {
 
             try {
-                System.out.println("PROCESSING: "+infile+" -> "+
+                logger.info("PROCESSING: "+infile+" -> "+
                 		(outfile.isDirectory() ? "metadata.csv" : outfile)+
                         " , FORMAT 'CSV'");                  
 
@@ -615,7 +615,7 @@ public class WCTExportBatch {
         logger.info("   METADATA EXPORT.... ");
         logger.info(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
 
-        System.out.println("PROCESSING: "+inurl+" -> "+
+        logger.info("PROCESSING: "+inurl+" -> "+
         		(outfile.isDirectory() ? "metadata.csv" : outfile)+
                 " , FORMAT 'CSV'");                  
 
@@ -681,7 +681,7 @@ public class WCTExportBatch {
     public static void doBatchExport(WCTExport exporter, URL inurl, File outfile) {
 
     	String ext = WCTExportUtils.getExportFileExtension(exporter.getOutputFormat());
-        System.out.println("PROCESSING: "+inurl+" -> "+outfile+
+        logger.info("PROCESSING: "+inurl+" -> "+outfile+
                 (outfile.toString().endsWith(ext) ? "" : ext )+
                 " , FORMAT '"+exporter.getOutputFormat()+"'");                  
 
