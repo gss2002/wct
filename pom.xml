@@ -1,27 +1,44 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>gov.noaa.wct</groupId>
-  <artifactId>wct</artifactId>
-  <version>4.0.1</version>
-   <repositories>
-    <repository>
-        <id>unidata-releases</id>
-        <name>Unidata Releases</name>
-        <url>https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases/</url>
-    </repository>
-   	<repository>
-    	<id>osgeo</id>
-    	<name>Open Source Geospatial Foundation Repository</name>
-    	<url>http://download.osgeo.org/webdav/geotools/</url>
-  	</repository>
-  	<repository>
-  	
-  		<id>cidanoaa</id>
-  		<name>NoaaGIS</name>
-  		<url>http://cida.usgs.gov/maven/cida-public-releases/</url>
-  	</repository>
-   </repositories>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>gov.noaa.wct</groupId>
+	<artifactId>wct</artifactId>
+	<version>4.0.1</version>
+
+	<distributionManagement>
+		<repository>
+			<id>sftp-repository</id>
+			<url>scpexe://lnxgen.senia.org/u01/m2/repository/</url>
+		</repository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>unidata-releases</id>
+			<name>Unidata Releases</name>
+			<url>https://artifacts.unidata.ucar.edu/content/repositories/unidata-releases/</url>
+		</repository>
+		<repository>
+			<id>osgeo</id>
+			<name>Open Source Geospatial Foundation Repository</name>
+			<url>http://download.osgeo.org/webdav/geotools/</url>
+		</repository>
+		<repository>
+
+			<id>cidanoaa</id>
+			<name>NoaaGIS</name>
+			<url>http://cida.usgs.gov/maven/cida-public-releases/</url>
+		</repository>
+	</repositories>
 	<build>
+	    <extensions>
+      <!-- Enabling the use of SSH -->
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+         <artifactId>wagon-ssh-external</artifactId>
+         <version>1.0-beta-6</version>
+      </extension>
+    </extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -187,72 +204,72 @@
 		<dependency>
 			<groupId>jsch</groupId>
 			<artifactId>jsch</artifactId>
-    		<version>0.1.33-20070611</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>jide-oss</groupId>
-    		<artifactId>jide-oss</artifactId>
-    		<version>3.2.3</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>DJNativeSwing</groupId>
-    		<artifactId>DJNativeSwing</artifactId>
-    		<version>1.0.1</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>DJNativeSwing-SWT</groupId>
-    		<artifactId>DJNativeSwing-SWT</artifactId>
-    		<version>1.0.1</version>
-    	</dependency>
-    	<dependency>
-    <groupId>com.googlecode.json-simple</groupId>
-    <artifactId>json-simple</artifactId>
-    <version>1.1.1</version>
-</dependency>
-    	<dependency>
-    <groupId>com.thoughtworks.xstream</groupId>
-    <artifactId>xstream</artifactId>
-    <version>1.4.1</version>
-</dependency>
-    	<dependency>
-    		<groupId>fi-faidon</groupId>
-    		<artifactId>fi-faidon</artifactId>
-    		<version>STEVE</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>Panoply</groupId>
-    		<artifactId>Panoply</artifactId>
-    		<version>0.1</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>icepdf-core</groupId>
-    		<artifactId>icepdf-core</artifactId>
-    		<version>0.1</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>icepdf-viewer</groupId>
-    		<artifactId>icepdf-viewer</artifactId>
-    		<version>0.1</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>itext</groupId>
-    		<artifactId>itext</artifactId>
-    		<version>2.0.0</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>accordion</groupId>
-    		<artifactId>accordion</artifactId>
-    		<version>1.2.0</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>prompt</groupId>
-    		<artifactId>prompt</artifactId>
-    		<version>0.1</version>
-    	</dependency>
-    	<dependency>
-    		<groupId>swt</groupId>
-    		<artifactId>swt</artifactId>
-    		<version>4.5</version>
-    	</dependency>
-    </dependencies>
+			<version>0.1.33-20070611</version>
+		</dependency>
+		<dependency>
+			<groupId>jide-oss</groupId>
+			<artifactId>jide-oss</artifactId>
+			<version>3.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>DJNativeSwing</groupId>
+			<artifactId>DJNativeSwing</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>DJNativeSwing-SWT</groupId>
+			<artifactId>DJNativeSwing-SWT</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>fi-faidon</groupId>
+			<artifactId>fi-faidon</artifactId>
+			<version>STEVE</version>
+		</dependency>
+		<dependency>
+			<groupId>Panoply</groupId>
+			<artifactId>Panoply</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>icepdf-core</groupId>
+			<artifactId>icepdf-core</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>icepdf-viewer</groupId>
+			<artifactId>icepdf-viewer</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>itext</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>accordion</groupId>
+			<artifactId>accordion</artifactId>
+			<version>1.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>prompt</groupId>
+			<artifactId>prompt</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>swt</groupId>
+			<artifactId>swt</artifactId>
+			<version>4.5</version>
+		</dependency>
+	</dependencies>
 </project>
